@@ -1,0 +1,4170 @@
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.max,"ax",%progbits
+  20              		.align	2
+  21              		.global	max
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	max, %function
+  25              	max:
+  26              	.LFB64:
+  27              		.file 1 "main.c"
+   1:main.c        **** /*
+   2:main.c        ****  * Copyright YOUR COMPANY, THE YEAR
+   3:main.c        ****  * All Rights Reserved
+   4:main.c        ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   5:main.c        ****  *
+   6:main.c        ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   7:main.c        ****  * WHICH IS THE PROPERTY OF your company.
+   8:main.c        ****  *
+   9:main.c        ****  * ========================================
+  10:main.c        **** */
+  11:main.c        **** #include "project.h"
+  12:main.c        **** #include "stdio.h"
+  13:main.c        **** 
+  14:main.c        **** #define TRANSMIT_BUFFER_SIZE 32
+  15:main.c        **** #define NUMBER_OF_SENSORS_MASTER 6 
+  16:main.c        **** #define NUM_PERIPH_BOARDS 1//NUMBER OF SENSORS ASSOCIATED WITH MASTER
+  17:main.c        **** //#define NUMBER_OF_SENSORS 4 //TOTAL NUMBER OF ACTIVE SENSORS ACROSS ALL PERIPHERALS
+  18:main.c        **** //#define NUM_BOARDS 2 //TOTAL NUMBER OF BOARDS (MASTER + PERIPHERALS) 
+  19:main.c        **** #define NUMBER_OF_SENSE_PARAM NUMBER_OF_SENSORS_MASTER+(2*NUM_PERIPH_BOARDS)
+  20:main.c        **** 
+  21:main.c        **** #define NUMBER_OF_CAN_PARAM 3 //MAX, MIN, AVG
+  22:main.c        **** 
+  23:main.c        **** uint16 RX_DATA_P1[NUMBER_OF_CAN_PARAM];
+  24:main.c        **** uint16 TX_DATA[NUMBER_OF_CAN_PARAM];
+  25:main.c        **** uint8 TX_DATA8[NUMBER_OF_CAN_PARAM];
+  26:main.c        **** //uint32 output;
+  27:main.c        **** 
+  28:main.c        **** uint16 max(uint16 arr[], int n)
+  29:main.c        **** {
+  28              		.loc 1 29 0
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 2
+
+
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  34 0000 10B4     		push	{r4}
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 4, -4
+  37 0002 0446     		mov	r4, r0
+  38              	.LVL1:
+  30:main.c        ****     int i;
+  31:main.c        ****     int max = 0;
+  39              		.loc 1 31 0
+  40 0004 0020     		movs	r0, #0
+  41              	.LVL2:
+  32:main.c        ****     
+  33:main.c        ****     for (i = 0; i < n; i++)
+  42              		.loc 1 33 0
+  43 0006 0346     		mov	r3, r0
+  44 0008 05E0     		b	.L2
+  45              	.LVL3:
+  46              	.L4:
+  34:main.c        ****         if (arr[i] > max)
+  47              		.loc 1 34 0
+  48 000a 34F81320 		ldrh	r2, [r4, r3, lsl #1]
+  49 000e 9042     		cmp	r0, r2
+  50 0010 00DA     		bge	.L3
+  35:main.c        ****         max = arr[i];
+  51              		.loc 1 35 0
+  52 0012 1046     		mov	r0, r2
+  53              	.LVL4:
+  54              	.L3:
+  33:main.c        ****         if (arr[i] > max)
+  55              		.loc 1 33 0 discriminator 2
+  56 0014 0133     		adds	r3, r3, #1
+  57              	.LVL5:
+  58              	.L2:
+  33:main.c        ****         if (arr[i] > max)
+  59              		.loc 1 33 0 is_stmt 0 discriminator 1
+  60 0016 8B42     		cmp	r3, r1
+  61 0018 F7DB     		blt	.L4
+  36:main.c        ****         
+  37:main.c        ****      return max;
+  38:main.c        **** }
+  62              		.loc 1 38 0 is_stmt 1
+  63 001a 10BC     		pop	{r4}
+  64              		.cfi_restore 4
+  65              		.cfi_def_cfa_offset 0
+  66              	.LVL6:
+  67 001c 7047     		bx	lr
+  68              		.cfi_endproc
+  69              	.LFE64:
+  70              		.size	max, .-max
+  71 001e 00BF     		.section	.text.min,"ax",%progbits
+  72              		.align	2
+  73              		.global	min
+  74              		.thumb
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 3
+
+
+  75              		.thumb_func
+  76              		.type	min, %function
+  77              	min:
+  78              	.LFB65:
+  39:main.c        **** 
+  40:main.c        **** uint16 min(uint16 arr[], int n, int max)
+  41:main.c        **** {
+  79              		.loc 1 41 0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 0
+  82              		@ frame_needed = 0, uses_anonymous_args = 0
+  83              		@ link register save eliminated.
+  84              	.LVL7:
+  85 0000 10B4     		push	{r4}
+  86              		.cfi_def_cfa_offset 4
+  87              		.cfi_offset 4, -4
+  88              	.LVL8:
+  42:main.c        ****     int i;
+  43:main.c        ****     int min = max; //Initialising
+  44:main.c        ****     
+  45:main.c        ****     for (i = 0; i < n; i++){
+  89              		.loc 1 45 0
+  90 0002 0023     		movs	r3, #0
+  91 0004 06E0     		b	.L8
+  92              	.LVL9:
+  93              	.L10:
+  46:main.c        ****         if ((arr[i] < min) && (arr[i] != 0)){
+  94              		.loc 1 46 0
+  95 0006 30F81340 		ldrh	r4, [r0, r3, lsl #1]
+  96 000a A242     		cmp	r2, r4
+  97 000c 01DD     		ble	.L9
+  98              		.loc 1 46 0 is_stmt 0 discriminator 1
+  99 000e 04B1     		cbz	r4, .L9
+  47:main.c        ****             min = arr[i];}
+ 100              		.loc 1 47 0 is_stmt 1
+ 101 0010 2246     		mov	r2, r4
+ 102              	.LVL10:
+ 103              	.L9:
+  45:main.c        ****         if ((arr[i] < min) && (arr[i] != 0)){
+ 104              		.loc 1 45 0 discriminator 2
+ 105 0012 0133     		adds	r3, r3, #1
+ 106              	.LVL11:
+ 107              	.L8:
+  45:main.c        ****         if ((arr[i] < min) && (arr[i] != 0)){
+ 108              		.loc 1 45 0 is_stmt 0 discriminator 1
+ 109 0014 8B42     		cmp	r3, r1
+ 110 0016 F6DB     		blt	.L10
+  48:main.c        ****     }
+  49:main.c        ****         
+  50:main.c        ****      return min;
+  51:main.c        **** }
+ 111              		.loc 1 51 0 is_stmt 1
+ 112 0018 90B2     		uxth	r0, r2
+ 113              	.LVL12:
+ 114 001a 10BC     		pop	{r4}
+ 115              		.cfi_restore 4
+ 116              		.cfi_def_cfa_offset 0
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 4
+
+
+ 117 001c 7047     		bx	lr
+ 118              		.cfi_endproc
+ 119              	.LFE65:
+ 120              		.size	min, .-min
+ 121 001e 00BF     		.section	.text.avg,"ax",%progbits
+ 122              		.align	2
+ 123              		.global	avg
+ 124              		.thumb
+ 125              		.thumb_func
+ 126              		.type	avg, %function
+ 127              	avg:
+ 128              	.LFB66:
+  52:main.c        **** 
+  53:main.c        **** uint16 avg(uint16 arr[], int n, int max)
+  54:main.c        **** {
+ 129              		.loc 1 54 0
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 0
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+ 133              		@ link register save eliminated.
+ 134              	.LVL13:
+ 135 0000 70B4     		push	{r4, r5, r6}
+ 136              		.cfi_def_cfa_offset 12
+ 137              		.cfi_offset 4, -12
+ 138              		.cfi_offset 5, -8
+ 139              		.cfi_offset 6, -4
+ 140              	.LVL14:
+  55:main.c        ****     int i;
+  56:main.c        ****     int sum = max; //Initialising
+ 141              		.loc 1 56 0
+ 142 0002 1546     		mov	r5, r2
+  57:main.c        ****     int conn_sensors = 0;
+ 143              		.loc 1 57 0
+ 144 0004 0026     		movs	r6, #0
+  58:main.c        ****     
+  59:main.c        ****     for (i = 0; i < n; i++){
+ 145              		.loc 1 59 0
+ 146 0006 3346     		mov	r3, r6
+ 147 0008 05E0     		b	.L14
+ 148              	.LVL15:
+ 149              	.L16:
+  60:main.c        ****         if (arr[i] != 0){
+ 150              		.loc 1 60 0
+ 151 000a 30F81340 		ldrh	r4, [r0, r3, lsl #1]
+ 152 000e 0CB1     		cbz	r4, .L15
+  61:main.c        ****             sum = sum + arr[i];
+ 153              		.loc 1 61 0
+ 154 0010 2544     		add	r5, r5, r4
+ 155              	.LVL16:
+  62:main.c        ****             conn_sensors = conn_sensors + 1;
+ 156              		.loc 1 62 0
+ 157 0012 0136     		adds	r6, r6, #1
+ 158              	.LVL17:
+ 159              	.L15:
+  59:main.c        ****         if (arr[i] != 0){
+ 160              		.loc 1 59 0 discriminator 2
+ 161 0014 0133     		adds	r3, r3, #1
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 5
+
+
+ 162              	.LVL18:
+ 163              	.L14:
+  59:main.c        ****         if (arr[i] != 0){
+ 164              		.loc 1 59 0 is_stmt 0 discriminator 1
+ 165 0016 8B42     		cmp	r3, r1
+ 166 0018 F7DB     		blt	.L16
+  63:main.c        ****         }
+  64:main.c        ****     }
+  65:main.c        ****      return ((sum-max)/conn_sensors);
+ 167              		.loc 1 65 0 is_stmt 1
+ 168 001a AD1A     		subs	r5, r5, r2
+ 169              	.LVL19:
+ 170 001c 95FBF6F0 		sdiv	r0, r5, r6
+ 171              	.LVL20:
+  66:main.c        **** }
+ 172              		.loc 1 66 0
+ 173 0020 80B2     		uxth	r0, r0
+ 174 0022 70BC     		pop	{r4, r5, r6}
+ 175              		.cfi_restore 6
+ 176              		.cfi_restore 5
+ 177              		.cfi_restore 4
+ 178              		.cfi_def_cfa_offset 0
+ 179              	.LVL21:
+ 180 0024 7047     		bx	lr
+ 181              		.cfi_endproc
+ 182              	.LFE66:
+ 183              		.size	avg, .-avg
+ 184 0026 00BF     		.section	.text.main,"ax",%progbits
+ 185              		.align	2
+ 186              		.global	main
+ 187              		.thumb
+ 188              		.thumb_func
+ 189              		.type	main, %function
+ 190              	main:
+ 191              	.LFB67:
+  67:main.c        **** 
+  68:main.c        **** uint8 volts2temp(uint16 volt_data);
+  69:main.c        **** 
+  70:main.c        **** int main(void)
+  71:main.c        **** {
+ 192              		.loc 1 71 0
+ 193              		.cfi_startproc
+ 194              		@ args = 0, pretend = 0, frame = 48
+ 195              		@ frame_needed = 0, uses_anonymous_args = 0
+ 196 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 197              		.cfi_def_cfa_offset 20
+ 198              		.cfi_offset 4, -20
+ 199              		.cfi_offset 5, -16
+ 200              		.cfi_offset 6, -12
+ 201              		.cfi_offset 7, -8
+ 202              		.cfi_offset 14, -4
+ 203 0002 8DB0     		sub	sp, sp, #52
+ 204              		.cfi_def_cfa_offset 72
+  72:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+ 205              		.loc 1 72 0
+ 206              		.syntax unified
+ 207              	@ 72 "main.c" 1
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 6
+
+
+ 208 0004 62B6     		CPSIE   i
+ 209              	@ 0 "" 2
+  73:main.c        ****     char TransmitBuffer[TRANSMIT_BUFFER_SIZE];
+  74:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  75:main.c        ****     PWM_1_Start();
+ 210              		.loc 1 75 0
+ 211              		.thumb
+ 212              		.syntax unified
+ 213 0006 FFF7FEFF 		bl	PWM_1_Start
+ 214              	.LVL22:
+  76:main.c        ****     UART_1_Start();
+ 215              		.loc 1 76 0
+ 216 000a FFF7FEFF 		bl	UART_1_Start
+ 217              	.LVL23:
+  77:main.c        ****     ADC_DelSig_1_Start();
+ 218              		.loc 1 77 0
+ 219 000e FFF7FEFF 		bl	ADC_DelSig_1_Start
+ 220              	.LVL24:
+  78:main.c        ****     AMux_1_Start();
+ 221              		.loc 1 78 0
+ 222 0012 FFF7FEFF 		bl	AMux_1_Start
+ 223              	.LVL25:
+  79:main.c        ****     CAN_1_Start();
+ 224              		.loc 1 79 0
+ 225 0016 FFF7FEFF 		bl	CAN_1_Start
+ 226              	.LVL26:
+  80:main.c        ****     
+  81:main.c        ****     ADC_DelSig_1_StartConvert();
+ 227              		.loc 1 81 0
+ 228 001a FFF7FEFF 		bl	ADC_DelSig_1_StartConvert
+ 229              	.LVL27:
+  82:main.c        ****     UART_1_PutString("COM Port Open");
+ 230              		.loc 1 82 0
+ 231 001e 6E48     		ldr	r0, .L29
+ 232 0020 FFF7FEFF 		bl	UART_1_PutString
+ 233              	.LVL28:
+ 234              	.L27:
+ 235              	.LBB2:
+  83:main.c        ****     
+  84:main.c        ****     for(;;)
+  85:main.c        ****     {   
+  86:main.c        ****         /* Place your application code here. */
+  87:main.c        ****         
+  88:main.c        ****         uint16 datapin[NUMBER_OF_SENSE_PARAM];
+  89:main.c        ****         
+  90:main.c        ****         sprintf(TransmitBuffer, "####### NEW SAMPLES #######\r\n");
+ 236              		.loc 1 90 0
+ 237 0024 04AC     		add	r4, sp, #16
+ 238 0026 6D4D     		ldr	r5, .L29+4
+ 239 0028 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 240 002a 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 241 002c 95E80F00 		ldmia	r5, {r0, r1, r2, r3}
+ 242 0030 07C4     		stmia	r4!, {r0, r1, r2}
+ 243 0032 2380     		strh	r3, [r4]	@ movhi
+  91:main.c        ****         UART_1_PutString(TransmitBuffer);
+ 244              		.loc 1 91 0
+ 245 0034 04A8     		add	r0, sp, #16
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 7
+
+
+ 246 0036 FFF7FEFF 		bl	UART_1_PutString
+ 247              	.LVL29:
+  92:main.c        ****         CyDelay(100);
+ 248              		.loc 1 92 0
+ 249 003a 6420     		movs	r0, #100
+ 250 003c FFF7FEFF 		bl	CyDelay
+ 251              	.LVL30:
+  93:main.c        ****         
+  94:main.c        ****         //Get samples from master first
+  95:main.c        ****         int i;
+  96:main.c        ****         
+  97:main.c        ****         for (i = 0; i < NUMBER_OF_SENSORS_MASTER; i++){
+ 252              		.loc 1 97 0
+ 253 0040 0024     		movs	r4, #0
+ 254 0042 31E0     		b	.L19
+ 255              	.LVL31:
+ 256              	.L22:
+  98:main.c        ****         AMux_1_Select(i);
+ 257              		.loc 1 98 0
+ 258 0044 E0B2     		uxtb	r0, r4
+ 259 0046 FFF7FEFF 		bl	AMux_1_FastSelect
+ 260              	.LVL32:
+  99:main.c        ****         if(ADC_DelSig_1_IsEndConversion(ADC_DelSig_1_RETURN_STATUS))
+ 261              		.loc 1 99 0
+ 262 004a 0120     		movs	r0, #1
+ 263 004c FFF7FEFF 		bl	ADC_DelSig_1_IsEndConversion
+ 264              	.LVL33:
+ 265 0050 30B3     		cbz	r0, .L20
+ 100:main.c        ****         {
+ 101:main.c        ****         //ADC_DelSig_1_SetGain(51);
+ 102:main.c        ****             datapin[i]=  ADC_DelSig_1_CountsTo_mVolts(ADC_DelSig_1_GetResult16());
+ 266              		.loc 1 102 0
+ 267 0052 FFF7FEFF 		bl	ADC_DelSig_1_GetResult16
+ 268              	.LVL34:
+ 269 0056 FFF7FEFF 		bl	ADC_DelSig_1_CountsTo_mVolts
+ 270              	.LVL35:
+ 271 005a 82B2     		uxth	r2, r0
+ 272 005c 0CAB     		add	r3, sp, #48
+ 273 005e 03EB4403 		add	r3, r3, r4, lsl #1
+ 274 0062 23F8302C 		strh	r2, [r3, #-48]	@ movhi
+ 103:main.c        ****             if ((datapin[i] < 100) || (datapin[i] > 6000)){ //Some tolerance for Grounded Voltage (
+ 275              		.loc 1 103 0
+ 276 0066 A2F16403 		sub	r3, r2, #100
+ 277 006a 9BB2     		uxth	r3, r3
+ 278 006c 41F20C71 		movw	r1, #5900
+ 279 0070 8B42     		cmp	r3, r1
+ 280 0072 0ED9     		bls	.L21
+ 104:main.c        ****                 datapin[i] = 0;
+ 281              		.loc 1 104 0
+ 282 0074 0022     		movs	r2, #0
+ 283 0076 0CAB     		add	r3, sp, #48
+ 284 0078 03EB4403 		add	r3, r3, r4, lsl #1
+ 285 007c 23F8302C 		strh	r2, [r3, #-48]	@ movhi
+ 105:main.c        ****                 sprintf(TransmitBuffer, "Pin to GND\r\n");
+ 286              		.loc 1 105 0
+ 287 0080 574B     		ldr	r3, .L29+8
+ 288 0082 04AD     		add	r5, sp, #16
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 8
+
+
+ 289 0084 0FCB     		ldmia	r3, {r0, r1, r2, r3}
+ 290 0086 07C5     		stmia	r5!, {r0, r1, r2}
+ 291 0088 2B70     		strb	r3, [r5]
+ 106:main.c        ****                 UART_1_PutString(TransmitBuffer);
+ 292              		.loc 1 106 0
+ 293 008a 04A8     		add	r0, sp, #16
+ 294 008c FFF7FEFF 		bl	UART_1_PutString
+ 295              	.LVL36:
+ 296 0090 06E0     		b	.L20
+ 297              	.L21:
+ 107:main.c        ****             }
+ 108:main.c        ****             else{   
+ 109:main.c        ****         //output = ADC_DelSig_1_CountsTo_mVolts(ADC_DelSig_1_GetResult8());
+ 110:main.c        ****             sprintf(TransmitBuffer, "Sample: %d mV\r\n", datapin[i]);
+ 298              		.loc 1 110 0
+ 299 0092 5449     		ldr	r1, .L29+12
+ 300 0094 04A8     		add	r0, sp, #16
+ 301 0096 FFF7FEFF 		bl	sprintf
+ 302              	.LVL37:
+ 111:main.c        ****             UART_1_PutString(TransmitBuffer);
+ 303              		.loc 1 111 0
+ 304 009a 04A8     		add	r0, sp, #16
+ 305 009c FFF7FEFF 		bl	UART_1_PutString
+ 306              	.LVL38:
+ 307              	.L20:
+ 112:main.c        ****             }
+ 113:main.c        ****         }
+ 114:main.c        ****         
+ 115:main.c        ****         CyDelay(100);
+ 308              		.loc 1 115 0 discriminator 2
+ 309 00a0 6420     		movs	r0, #100
+ 310 00a2 FFF7FEFF 		bl	CyDelay
+ 311              	.LVL39:
+  97:main.c        ****         AMux_1_Select(i);
+ 312              		.loc 1 97 0 discriminator 2
+ 313 00a6 0134     		adds	r4, r4, #1
+ 314              	.LVL40:
+ 315              	.L19:
+  97:main.c        ****         AMux_1_Select(i);
+ 316              		.loc 1 97 0 is_stmt 0 discriminator 1
+ 317 00a8 052C     		cmp	r4, #5
+ 318 00aa CBDD     		ble	.L22
+ 116:main.c        ****         }
+ 117:main.c        ****         
+ 118:main.c        ****         //Print what you got from the peripherals
+ 119:main.c        ****         sprintf(TransmitBuffer, "\nPERIPHERAL 1 MAX: %d mV\r\n", RX_DATA_P1[0]);
+ 319              		.loc 1 119 0 is_stmt 1
+ 320 00ac 4E4E     		ldr	r6, .L29+16
+ 321 00ae 3288     		ldrh	r2, [r6]
+ 322 00b0 4E49     		ldr	r1, .L29+20
+ 323 00b2 04A8     		add	r0, sp, #16
+ 324 00b4 FFF7FEFF 		bl	sprintf
+ 325              	.LVL41:
+ 120:main.c        ****         UART_1_PutString(TransmitBuffer);
+ 326              		.loc 1 120 0
+ 327 00b8 04A8     		add	r0, sp, #16
+ 328 00ba FFF7FEFF 		bl	UART_1_PutString
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 9
+
+
+ 329              	.LVL42:
+ 121:main.c        ****         sprintf(TransmitBuffer, "PERIPHERAL 1 MIN: %d mV\r\n", RX_DATA_P1[1]);
+ 330              		.loc 1 121 0
+ 331 00be 7288     		ldrh	r2, [r6, #2]
+ 332 00c0 4B49     		ldr	r1, .L29+24
+ 333 00c2 04A8     		add	r0, sp, #16
+ 334 00c4 FFF7FEFF 		bl	sprintf
+ 335              	.LVL43:
+ 122:main.c        ****         UART_1_PutString(TransmitBuffer);
+ 336              		.loc 1 122 0
+ 337 00c8 04A8     		add	r0, sp, #16
+ 338 00ca FFF7FEFF 		bl	UART_1_PutString
+ 339              	.LVL44:
+ 123:main.c        ****         sprintf(TransmitBuffer, "PERIPHERAL 1 AVG: %d mV\r\n\n", RX_DATA_P1[2]);
+ 340              		.loc 1 123 0
+ 341 00ce B288     		ldrh	r2, [r6, #4]
+ 342 00d0 4849     		ldr	r1, .L29+28
+ 343 00d2 04A8     		add	r0, sp, #16
+ 344 00d4 FFF7FEFF 		bl	sprintf
+ 345              	.LVL45:
+ 124:main.c        ****         UART_1_PutString(TransmitBuffer);
+ 346              		.loc 1 124 0
+ 347 00d8 04A8     		add	r0, sp, #16
+ 348 00da FFF7FEFF 		bl	UART_1_PutString
+ 349              	.LVL46:
+ 125:main.c        ****         
+ 126:main.c        ****         CyDelay(100);
+ 350              		.loc 1 126 0
+ 351 00de 6420     		movs	r0, #100
+ 352 00e0 FFF7FEFF 		bl	CyDelay
+ 353              	.LVL47:
+ 127:main.c        ****         
+ 128:main.c        ****         datapin[NUMBER_OF_SENSORS_MASTER] = RX_DATA_P1[0]; //Add Max of Peripheral to datapin array
+ 354              		.loc 1 128 0
+ 355 00e4 3388     		ldrh	r3, [r6]
+ 356 00e6 ADF80C30 		strh	r3, [sp, #12]	@ movhi
+ 129:main.c        ****         datapin[NUMBER_OF_SENSORS_MASTER+1] = RX_DATA_P1[1]; //Add Min of Peripheral to datapin arr
+ 357              		.loc 1 129 0
+ 358 00ea 7388     		ldrh	r3, [r6, #2]
+ 359 00ec ADF80E30 		strh	r3, [sp, #14]	@ movhi
+ 130:main.c        ****         
+ 131:main.c        ****         TX_DATA[0] = (max(datapin, NUMBER_OF_SENSE_PARAM)); //Use max function to find max of every
+ 360              		.loc 1 131 0
+ 361 00f0 0821     		movs	r1, #8
+ 362 00f2 6846     		mov	r0, sp
+ 363 00f4 FFF7FEFF 		bl	max
+ 364              	.LVL48:
+ 365 00f8 0446     		mov	r4, r0
+ 366              	.LVL49:
+ 367 00fa 3F4F     		ldr	r7, .L29+32
+ 368 00fc 3880     		strh	r0, [r7]	@ movhi
+ 132:main.c        ****         TX_DATA[1] = (min(datapin, NUMBER_OF_SENSE_PARAM, TX_DATA[0])); //Use min
+ 369              		.loc 1 132 0
+ 370 00fe 0246     		mov	r2, r0
+ 371 0100 0821     		movs	r1, #8
+ 372 0102 6846     		mov	r0, sp
+ 373 0104 FFF7FEFF 		bl	min
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 10
+
+
+ 374              	.LVL50:
+ 375 0108 0546     		mov	r5, r0
+ 376 010a 7880     		strh	r0, [r7, #2]	@ movhi
+ 133:main.c        ****         TX_DATA[2] = (avg(datapin, NUMBER_OF_SENSE_PARAM, TX_DATA[0]) + RX_DATA_P1[2])/(NUM_PERIPH_
+ 377              		.loc 1 133 0
+ 378 010c 2246     		mov	r2, r4
+ 379 010e 0821     		movs	r1, #8
+ 380 0110 6846     		mov	r0, sp
+ 381 0112 FFF7FEFF 		bl	avg
+ 382              	.LVL51:
+ 383 0116 B388     		ldrh	r3, [r6, #4]
+ 384 0118 1844     		add	r0, r0, r3
+ 385 011a 00EBD070 		add	r0, r0, r0, lsr #31
+ 386 011e C0F34F03 		ubfx	r3, r0, #1, #16
+ 387 0122 BB80     		strh	r3, [r7, #4]	@ movhi
+ 134:main.c        ****         
+ 135:main.c        ****         TX_DATA8[0] = (int)(TX_DATA[0]/100);
+ 388              		.loc 1 135 0
+ 389 0124 3549     		ldr	r1, .L29+36
+ 390 0126 A1FB0424 		umull	r2, r4, r1, r4
+ 391 012a C4F34714 		ubfx	r4, r4, #5, #8
+ 392 012e 344A     		ldr	r2, .L29+40
+ 393 0130 1470     		strb	r4, [r2]
+ 136:main.c        ****         //TX_DATA8[0] = volts2temp(TX_DATA[0])
+ 137:main.c        ****         TX_DATA8[1] = (int)(TX_DATA[1]/100);
+ 394              		.loc 1 137 0
+ 395 0132 A1FB0505 		umull	r0, r5, r1, r5
+ 396 0136 6D09     		lsrs	r5, r5, #5
+ 397 0138 5570     		strb	r5, [r2, #1]
+ 138:main.c        ****         //TX_DATA8[1] = volts2temp(TX_DATA[1])
+ 139:main.c        ****         TX_DATA8[2] = (int)(TX_DATA[2]/100);
+ 398              		.loc 1 139 0
+ 399 013a A1FB0313 		umull	r1, r3, r1, r3
+ 400 013e 5B09     		lsrs	r3, r3, #5
+ 401 0140 9370     		strb	r3, [r2, #2]
+ 140:main.c        ****         //TX_DATA8[2] = volts2temp(TX_DATA[2])
+ 141:main.c        ****         
+ 142:main.c        ****         //Set Fan PWM
+ 143:main.c        ****         if((TX_DATA8[0] <= 35)){
+ 402              		.loc 1 143 0
+ 403 0142 232C     		cmp	r4, #35
+ 404 0144 03D8     		bhi	.L23
+ 144:main.c        ****             PWM_1_WriteCompare(40);
+ 405              		.loc 1 144 0
+ 406 0146 2820     		movs	r0, #40
+ 407 0148 FFF7FEFF 		bl	PWM_1_WriteCompare
+ 408              	.LVL52:
+ 409 014c 16E0     		b	.L24
+ 410              	.L23:
+ 145:main.c        ****         }
+ 146:main.c        ****         else if((TX_DATA8[0] > 35) && (TX_DATA8[0] <= 55)){
+ 411              		.loc 1 146 0
+ 412 014e A4F12403 		sub	r3, r4, #36
+ 413 0152 DBB2     		uxtb	r3, r3
+ 414 0154 132B     		cmp	r3, #19
+ 415 0156 08D8     		bhi	.L25
+ 147:main.c        ****             PWM_1_WriteCompare((40+(TX_DATA8[0]-35)*3));
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 11
+
+
+ 416              		.loc 1 147 0
+ 417 0158 233C     		subs	r4, r4, #35
+ 418 015a 04EB4404 		add	r4, r4, r4, lsl #1
+ 419 015e 04F12800 		add	r0, r4, #40
+ 420 0162 C0B2     		uxtb	r0, r0
+ 421 0164 FFF7FEFF 		bl	PWM_1_WriteCompare
+ 422              	.LVL53:
+ 423 0168 08E0     		b	.L24
+ 424              	.L25:
+ 148:main.c        ****         }
+ 149:main.c        ****         else if((TX_DATA8[0]> 55)){
+ 425              		.loc 1 149 0
+ 426 016a 372C     		cmp	r4, #55
+ 427 016c 03D9     		bls	.L26
+ 150:main.c        ****             PWM_1_WriteCompare(100);
+ 428              		.loc 1 150 0
+ 429 016e 6420     		movs	r0, #100
+ 430 0170 FFF7FEFF 		bl	PWM_1_WriteCompare
+ 431              	.LVL54:
+ 432 0174 02E0     		b	.L24
+ 433              	.L26:
+ 151:main.c        ****         }
+ 152:main.c        ****         else{
+ 153:main.c        ****              PWM_1_WriteCompare(40);
+ 434              		.loc 1 153 0
+ 435 0176 2820     		movs	r0, #40
+ 436 0178 FFF7FEFF 		bl	PWM_1_WriteCompare
+ 437              	.LVL55:
+ 438              	.L24:
+ 154:main.c        ****         }   
+ 155:main.c        ****         
+ 156:main.c        ****         //Simulate transmission to Orion
+ 157:main.c        ****         sprintf(TransmitBuffer, "(ORION BMS) MAX: %d C\r\n", TX_DATA8[0]);
+ 439              		.loc 1 157 0
+ 440 017c 204C     		ldr	r4, .L29+40
+ 441 017e 2278     		ldrb	r2, [r4]	@ zero_extendqisi2
+ 442 0180 2049     		ldr	r1, .L29+44
+ 443 0182 04A8     		add	r0, sp, #16
+ 444 0184 FFF7FEFF 		bl	sprintf
+ 445              	.LVL56:
+ 158:main.c        ****         UART_1_PutString(TransmitBuffer);
+ 446              		.loc 1 158 0
+ 447 0188 04A8     		add	r0, sp, #16
+ 448 018a FFF7FEFF 		bl	UART_1_PutString
+ 449              	.LVL57:
+ 159:main.c        ****         CyDelay(100);
+ 450              		.loc 1 159 0
+ 451 018e 6420     		movs	r0, #100
+ 452 0190 FFF7FEFF 		bl	CyDelay
+ 453              	.LVL58:
+ 160:main.c        ****         sprintf(TransmitBuffer, "(ORION BMS) MIN: %d C\r\n", TX_DATA8[1]);
+ 454              		.loc 1 160 0
+ 455 0194 6278     		ldrb	r2, [r4, #1]	@ zero_extendqisi2
+ 456 0196 1C49     		ldr	r1, .L29+48
+ 457 0198 04A8     		add	r0, sp, #16
+ 458 019a FFF7FEFF 		bl	sprintf
+ 459              	.LVL59:
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 12
+
+
+ 161:main.c        ****         UART_1_PutString(TransmitBuffer);
+ 460              		.loc 1 161 0
+ 461 019e 04A8     		add	r0, sp, #16
+ 462 01a0 FFF7FEFF 		bl	UART_1_PutString
+ 463              	.LVL60:
+ 162:main.c        ****         CyDelay(100);
+ 464              		.loc 1 162 0
+ 465 01a4 6420     		movs	r0, #100
+ 466 01a6 FFF7FEFF 		bl	CyDelay
+ 467              	.LVL61:
+ 163:main.c        ****         sprintf(TransmitBuffer, "(ORION BMS) AVG: %d C\r\n\n", TX_DATA8[2]);
+ 468              		.loc 1 163 0
+ 469 01aa A278     		ldrb	r2, [r4, #2]	@ zero_extendqisi2
+ 470 01ac 1749     		ldr	r1, .L29+52
+ 471 01ae 04A8     		add	r0, sp, #16
+ 472 01b0 FFF7FEFF 		bl	sprintf
+ 473              	.LVL62:
+ 164:main.c        ****         UART_1_PutString(TransmitBuffer);
+ 474              		.loc 1 164 0
+ 475 01b4 04A8     		add	r0, sp, #16
+ 476 01b6 FFF7FEFF 		bl	UART_1_PutString
+ 477              	.LVL63:
+ 165:main.c        ****         CyDelay(100);
+ 478              		.loc 1 165 0
+ 479 01ba 6420     		movs	r0, #100
+ 480 01bc FFF7FEFF 		bl	CyDelay
+ 481              	.LVL64:
+ 166:main.c        ****         
+ 167:main.c        ****         CAN_1_SendMsg0();
+ 482              		.loc 1 167 0
+ 483 01c0 FFF7FEFF 		bl	CAN_1_SendMsg0
+ 484              	.LVL65:
+ 168:main.c        ****         CyDelay(100);
+ 485              		.loc 1 168 0
+ 486 01c4 6420     		movs	r0, #100
+ 487 01c6 FFF7FEFF 		bl	CyDelay
+ 488              	.LVL66:
+ 169:main.c        ****         CAN_1_SendMsg1();
+ 489              		.loc 1 169 0
+ 490 01ca FFF7FEFF 		bl	CAN_1_SendMsg1
+ 491              	.LVL67:
+ 170:main.c        ****         CyDelay(100);
+ 492              		.loc 1 170 0
+ 493 01ce 6420     		movs	r0, #100
+ 494 01d0 FFF7FEFF 		bl	CyDelay
+ 495              	.LVL68:
+ 496              	.LBE2:
+ 171:main.c        ****     }
+ 497              		.loc 1 171 0
+ 498 01d4 26E7     		b	.L27
+ 499              	.L30:
+ 500 01d6 00BF     		.align	2
+ 501              	.L29:
+ 502 01d8 00000000 		.word	.LC0
+ 503 01dc 10000000 		.word	.LC1
+ 504 01e0 30000000 		.word	.LC2
+ 505 01e4 40000000 		.word	.LC3
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 13
+
+
+ 506 01e8 00000000 		.word	RX_DATA_P1
+ 507 01ec 50000000 		.word	.LC4
+ 508 01f0 6C000000 		.word	.LC5
+ 509 01f4 88000000 		.word	.LC6
+ 510 01f8 00000000 		.word	TX_DATA
+ 511 01fc 1F85EB51 		.word	1374389535
+ 512 0200 00000000 		.word	TX_DATA8
+ 513 0204 A4000000 		.word	.LC7
+ 514 0208 BC000000 		.word	.LC8
+ 515 020c D4000000 		.word	.LC9
+ 516              		.cfi_endproc
+ 517              	.LFE67:
+ 518              		.size	main, .-main
+ 519              		.section	.text.volts2temp,"ax",%progbits
+ 520              		.align	2
+ 521              		.global	volts2temp
+ 522              		.thumb
+ 523              		.thumb_func
+ 524              		.type	volts2temp, %function
+ 525              	volts2temp:
+ 526              	.LFB68:
+ 172:main.c        **** }
+ 173:main.c        **** //LUT table taken from 2019 MUR TMS code
+ 174:main.c        **** uint8 volts2temp(uint16 volts){
+ 527              		.loc 1 174 0
+ 528              		.cfi_startproc
+ 529              		@ args = 0, pretend = 0, frame = 0
+ 530              		@ frame_needed = 0, uses_anonymous_args = 0
+ 531              		@ link register save eliminated.
+ 532              	.LVL69:
+ 175:main.c        ****     uint8 temp = 0;
+ 176:main.c        ****     if (volts < 1514){
+ 533              		.loc 1 176 0
+ 534 0000 40F2E953 		movw	r3, #1513
+ 535 0004 9842     		cmp	r0, r3
+ 536 0006 4DD8     		bhi	.L32
+ 177:main.c        ****         if(volts < 1303) temp = 120; //NOTE: GROUNDED CONDITION NOT INCOORPORATED 
+ 537              		.loc 1 177 0
+ 538 0008 40F21653 		movw	r3, #1302
+ 539 000c 9842     		cmp	r0, r3
+ 540 000e 40F21681 		bls	.L36
+ 178:main.c        ****         else if(volts<1316) temp=115;
+ 541              		.loc 1 178 0
+ 542 0012 40F22353 		movw	r3, #1315
+ 543 0016 9842     		cmp	r0, r3
+ 544 0018 40F21381 		bls	.L37
+ 179:main.c        ****         else if(volts<1326) temp=110;
+ 545              		.loc 1 179 0
+ 546 001c 40F22D53 		movw	r3, #1325
+ 547 0020 9842     		cmp	r0, r3
+ 548 0022 40F21081 		bls	.L38
+ 180:main.c        ****         else if(volts<1337) temp=105;
+ 549              		.loc 1 180 0
+ 550 0026 B0F5A76F 		cmp	r0, #1336
+ 551 002a 40F20E81 		bls	.L39
+ 181:main.c        ****         else if(volts<1348) temp=100;
+ 552              		.loc 1 181 0
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 14
+
+
+ 553 002e 40F24353 		movw	r3, #1347
+ 554 0032 9842     		cmp	r0, r3
+ 555 0034 40F20B81 		bls	.L40
+ 182:main.c        ****         else if(volts<1360) temp=95;
+ 556              		.loc 1 182 0
+ 557 0038 B0F5AA6F 		cmp	r0, #1360
+ 558 003c C0F00981 		bcc	.L41
+ 183:main.c        ****         else if(volts<1375) temp=90;
+ 559              		.loc 1 183 0
+ 560 0040 40F25E53 		movw	r3, #1374
+ 561 0044 9842     		cmp	r0, r3
+ 562 0046 40F20681 		bls	.L42
+ 184:main.c        ****         else if(volts<1391) temp=85;
+ 563              		.loc 1 184 0
+ 564 004a 40F26E53 		movw	r3, #1390
+ 565 004e 9842     		cmp	r0, r3
+ 566 0050 40F20381 		bls	.L43
+ 185:main.c        ****         else if(volts<1411) temp=80;
+ 567              		.loc 1 185 0
+ 568 0054 40F28253 		movw	r3, #1410
+ 569 0058 9842     		cmp	r0, r3
+ 570 005a 40F20081 		bls	.L44
+ 186:main.c        ****         else if(volts<1435) temp=75;
+ 571              		.loc 1 186 0
+ 572 005e 40F29A53 		movw	r3, #1434
+ 573 0062 9842     		cmp	r0, r3
+ 574 0064 40F2FD80 		bls	.L45
+ 187:main.c        ****         else if(volts<1463) temp=70;
+ 575              		.loc 1 187 0
+ 576 0068 40F2B653 		movw	r3, #1462
+ 577 006c 9842     		cmp	r0, r3
+ 578 006e 40F2FA80 		bls	.L46
+ 188:main.c        ****         else if(volts<1480) temp=65;
+ 579              		.loc 1 188 0
+ 580 0072 B0F5B96F 		cmp	r0, #1480
+ 581 0076 C0F0F880 		bcc	.L47
+ 189:main.c        ****         else if(volts<1487) temp=64;
+ 582              		.loc 1 189 0
+ 583 007a 40F2CE53 		movw	r3, #1486
+ 584 007e 9842     		cmp	r0, r3
+ 585 0080 40F2F580 		bls	.L48
+ 190:main.c        ****         else if(volts<1449) temp=63;
+ 586              		.loc 1 190 0
+ 587 0084 B0F5B56F 		cmp	r0, #1448
+ 588 0088 40F2F380 		bls	.L49
+ 191:main.c        ****         else if(volts<1500) temp=62;
+ 589              		.loc 1 191 0
+ 590 008c 40F2DB53 		movw	r3, #1499
+ 591 0090 9842     		cmp	r0, r3
+ 592 0092 40F2F080 		bls	.L50
+ 192:main.c        ****         else if(volts<1507) temp=61;
+ 593              		.loc 1 192 0
+ 594 0096 40F2E253 		movw	r3, #1506
+ 595 009a 9842     		cmp	r0, r3
+ 596 009c 00F2ED80 		bhi	.L51
+ 597 00a0 3D20     		movs	r0, #61
+ 598              	.LVL70:
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 15
+
+
+ 599 00a2 7047     		bx	lr
+ 600              	.LVL71:
+ 601              	.L32:
+ 193:main.c        ****         else temp = 60;
+ 194:main.c        ****     }
+ 195:main.c        ****     else if (volts < 1642){
+ 602              		.loc 1 195 0
+ 603 00a4 40F26963 		movw	r3, #1641
+ 604 00a8 9842     		cmp	r0, r3
+ 605 00aa 3FD8     		bhi	.L34
+ 196:main.c        ****         if (volts < 1522) temp = 59;
+ 606              		.loc 1 196 0
+ 607 00ac 40F2F153 		movw	r3, #1521
+ 608 00b0 9842     		cmp	r0, r3
+ 609 00b2 40F2E480 		bls	.L52
+ 197:main.c        ****         else if(volts<1529) temp=58;
+ 610              		.loc 1 197 0
+ 611 00b6 B0F5BF6F 		cmp	r0, #1528
+ 612 00ba 40F2E280 		bls	.L53
+ 198:main.c        ****         else if(volts<1537) temp=57;
+ 613              		.loc 1 198 0
+ 614 00be B0F5C06F 		cmp	r0, #1536
+ 615 00c2 40F2E080 		bls	.L54
+ 199:main.c        ****         else if(volts<1545) temp=56;
+ 616              		.loc 1 199 0
+ 617 00c6 B0F5C16F 		cmp	r0, #1544
+ 618 00ca 40F2DE80 		bls	.L55
+ 200:main.c        ****         else if(volts<1553) temp=55;
+ 619              		.loc 1 200 0
+ 620 00ce B0F5C26F 		cmp	r0, #1552
+ 621 00d2 40F2DC80 		bls	.L56
+ 201:main.c        ****         else if(volts<1561) temp=54;
+ 622              		.loc 1 201 0
+ 623 00d6 B0F5C36F 		cmp	r0, #1560
+ 624 00da 40F2DA80 		bls	.L57
+ 202:main.c        ****         else if(volts<1569) temp=53;
+ 625              		.loc 1 202 0
+ 626 00de B0F5C46F 		cmp	r0, #1568
+ 627 00e2 40F2D880 		bls	.L58
+ 203:main.c        ****         else if(volts<1577) temp=52;
+ 628              		.loc 1 203 0
+ 629 00e6 B0F5C56F 		cmp	r0, #1576
+ 630 00ea 40F2D680 		bls	.L59
+ 204:main.c        ****         else if(volts<1586) temp=51;
+ 631              		.loc 1 204 0
+ 632 00ee 40F23163 		movw	r3, #1585
+ 633 00f2 9842     		cmp	r0, r3
+ 634 00f4 40F2D380 		bls	.L60
+ 205:main.c        ****         else if(volts<1595) temp=50;
+ 635              		.loc 1 205 0
+ 636 00f8 40F23A63 		movw	r3, #1594
+ 637 00fc 9842     		cmp	r0, r3
+ 638 00fe 40F2D080 		bls	.L61
+ 206:main.c        ****         else if(volts<1605) temp=49;
+ 639              		.loc 1 206 0
+ 640 0102 40F24463 		movw	r3, #1604
+ 641 0106 9842     		cmp	r0, r3
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 16
+
+
+ 642 0108 40F2CD80 		bls	.L62
+ 207:main.c        ****         else if(volts<1613) temp=48;
+ 643              		.loc 1 207 0
+ 644 010c 40F24C63 		movw	r3, #1612
+ 645 0110 9842     		cmp	r0, r3
+ 646 0112 40F2CA80 		bls	.L63
+ 208:main.c        ****         else if(volts<1622) temp=47;
+ 647              		.loc 1 208 0
+ 648 0116 40F25563 		movw	r3, #1621
+ 649 011a 9842     		cmp	r0, r3
+ 650 011c 40F2C780 		bls	.L64
+ 209:main.c        ****         else if(volts<1632) temp=46;
+ 651              		.loc 1 209 0
+ 652 0120 B0F5CC6F 		cmp	r0, #1632
+ 653 0124 80F0C580 		bcs	.L65
+ 654 0128 2E20     		movs	r0, #46
+ 655              	.LVL72:
+ 656 012a 7047     		bx	lr
+ 657              	.LVL73:
+ 658              	.L34:
+ 210:main.c        ****         else temp=45;
+ 211:main.c        ****     }
+ 212:main.c        ****     else if (volts < 1803){
+ 659              		.loc 1 212 0
+ 660 012c 40F20A73 		movw	r3, #1802
+ 661 0130 9842     		cmp	r0, r3
+ 662 0132 44D8     		bhi	.L35
+ 213:main.c        ****         if(volts<1651) temp=44;
+ 663              		.loc 1 213 0
+ 664 0134 40F27263 		movw	r3, #1650
+ 665 0138 9842     		cmp	r0, r3
+ 666 013a 40F2BC80 		bls	.L66
+ 214:main.c        ****         else if(volts<1661) temp=43;
+ 667              		.loc 1 214 0
+ 668 013e 40F27C63 		movw	r3, #1660
+ 669 0142 9842     		cmp	r0, r3
+ 670 0144 40F2B980 		bls	.L67
+ 215:main.c        ****         else if(volts<1671) temp=42;
+ 671              		.loc 1 215 0
+ 672 0148 40F28663 		movw	r3, #1670
+ 673 014c 9842     		cmp	r0, r3
+ 674 014e 40F2B680 		bls	.L68
+ 216:main.c        ****         else if(volts<1681) temp=41;
+ 675              		.loc 1 216 0
+ 676 0152 B0F5D26F 		cmp	r0, #1680
+ 677 0156 40F2B480 		bls	.L69
+ 217:main.c        ****         else if(volts<1692) temp=40;
+ 678              		.loc 1 217 0
+ 679 015a 40F29B63 		movw	r3, #1691
+ 680 015e 9842     		cmp	r0, r3
+ 681 0160 40F2B180 		bls	.L70
+ 218:main.c        ****         else if(volts<1702) temp=39;
+ 682              		.loc 1 218 0
+ 683 0164 40F2A563 		movw	r3, #1701
+ 684 0168 9842     		cmp	r0, r3
+ 685 016a 40F2AE80 		bls	.L71
+ 219:main.c        ****         else if(volts<1713) temp=38;
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 17
+
+
+ 686              		.loc 1 219 0
+ 687 016e B0F5D66F 		cmp	r0, #1712
+ 688 0172 40F2AC80 		bls	.L72
+ 220:main.c        ****         else if(volts<1724) temp=37;
+ 689              		.loc 1 220 0
+ 690 0176 40F2BB63 		movw	r3, #1723
+ 691 017a 9842     		cmp	r0, r3
+ 692 017c 40F2A980 		bls	.L73
+ 221:main.c        ****         else if(volts<1735) temp=36;
+ 693              		.loc 1 221 0
+ 694 0180 40F2C663 		movw	r3, #1734
+ 695 0184 9842     		cmp	r0, r3
+ 696 0186 40F2A680 		bls	.L74
+ 222:main.c        ****         else if(volts<1746) temp=35;
+ 697              		.loc 1 222 0
+ 698 018a 40F2D163 		movw	r3, #1745
+ 699 018e 9842     		cmp	r0, r3
+ 700 0190 40F2A380 		bls	.L75
+ 223:main.c        ****         else if(volts<1757) temp=34;
+ 701              		.loc 1 223 0
+ 702 0194 40F2DC63 		movw	r3, #1756
+ 703 0198 9842     		cmp	r0, r3
+ 704 019a 40F2A080 		bls	.L76
+ 224:main.c        ****         else if(volts<1768) temp=33;
+ 705              		.loc 1 224 0
+ 706 019e B0F5DD6F 		cmp	r0, #1768
+ 707 01a2 C0F09E80 		bcc	.L77
+ 225:main.c        ****         else if(volts<1780) temp=32;
+ 708              		.loc 1 225 0
+ 709 01a6 40F2F363 		movw	r3, #1779
+ 710 01aa 9842     		cmp	r0, r3
+ 711 01ac 40F29B80 		bls	.L78
+ 226:main.c        ****         else if(volts<1791) temp=31;
+ 712              		.loc 1 226 0
+ 713 01b0 40F2FE63 		movw	r3, #1790
+ 714 01b4 9842     		cmp	r0, r3
+ 715 01b6 00F29880 		bhi	.L79
+ 716 01ba 1F20     		movs	r0, #31
+ 717              	.LVL74:
+ 718 01bc 7047     		bx	lr
+ 719              	.LVL75:
+ 720              	.L35:
+ 227:main.c        ****         else temp=30;
+ 228:main.c        ****     }
+ 229:main.c        ****     else{
+ 230:main.c        ****         if(volts<1815) temp=29;
+ 721              		.loc 1 230 0
+ 722 01be 40F21673 		movw	r3, #1814
+ 723 01c2 9842     		cmp	r0, r3
+ 724 01c4 40F29380 		bls	.L80
+ 231:main.c        ****         else if(volts<1827) temp=28;
+ 725              		.loc 1 231 0
+ 726 01c8 40F22273 		movw	r3, #1826
+ 727 01cc 9842     		cmp	r0, r3
+ 728 01ce 40F29080 		bls	.L81
+ 232:main.c        ****         else if(volts<1839) temp=27;
+ 729              		.loc 1 232 0
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 18
+
+
+ 730 01d2 40F22E73 		movw	r3, #1838
+ 731 01d6 9842     		cmp	r0, r3
+ 732 01d8 40F28D80 		bls	.L82
+ 233:main.c        ****         else if(volts<1851) temp=26;
+ 733              		.loc 1 233 0
+ 734 01dc 40F23A73 		movw	r3, #1850
+ 735 01e0 9842     		cmp	r0, r3
+ 736 01e2 40F28A80 		bls	.L83
+ 234:main.c        ****         else if(volts<1863) temp=25;
+ 737              		.loc 1 234 0
+ 738 01e6 40F24673 		movw	r3, #1862
+ 739 01ea 9842     		cmp	r0, r3
+ 740 01ec 40F28780 		bls	.L84
+ 235:main.c        ****         else if(volts<1876) temp=24;
+ 741              		.loc 1 235 0
+ 742 01f0 40F25373 		movw	r3, #1875
+ 743 01f4 9842     		cmp	r0, r3
+ 744 01f6 40F28480 		bls	.L85
+ 236:main.c        ****         else if(volts<1888) temp=23;
+ 745              		.loc 1 236 0
+ 746 01fa B0F5EC6F 		cmp	r0, #1888
+ 747 01fe C0F08280 		bcc	.L86
+ 237:main.c        ****         else if(volts<1901) temp=22;
+ 748              		.loc 1 237 0
+ 749 0202 40F26C73 		movw	r3, #1900
+ 750 0206 9842     		cmp	r0, r3
+ 751 0208 7FD9     		bls	.L87
+ 238:main.c        ****         else if(volts<1913) temp=21;
+ 752              		.loc 1 238 0
+ 753 020a B0F5EF6F 		cmp	r0, #1912
+ 754 020e 7ED9     		bls	.L88
+ 239:main.c        ****         else if(volts<1926) temp=20;
+ 755              		.loc 1 239 0
+ 756 0210 40F28573 		movw	r3, #1925
+ 757 0214 9842     		cmp	r0, r3
+ 758 0216 7CD9     		bls	.L89
+ 240:main.c        ****         else if(volts<1939) temp=19;
+ 759              		.loc 1 240 0
+ 760 0218 40F29273 		movw	r3, #1938
+ 761 021c 9842     		cmp	r0, r3
+ 762 021e 7AD9     		bls	.L90
+ 241:main.c        ****         else if(volts<1952) temp=18;
+ 763              		.loc 1 241 0
+ 764 0220 B0F5F46F 		cmp	r0, #1952
+ 765 0224 79D3     		bcc	.L91
+ 242:main.c        ****         else if(volts<1964) temp=17;
+ 766              		.loc 1 242 0
+ 767 0226 40F2AB73 		movw	r3, #1963
+ 768 022a 9842     		cmp	r0, r3
+ 769 022c 77D9     		bls	.L92
+ 243:main.c        ****         else if(volts<1977) temp=16;
+ 770              		.loc 1 243 0
+ 771 022e B0F5F76F 		cmp	r0, #1976
+ 772 0232 76D9     		bls	.L93
+ 244:main.c        ****         else if(volts<2016) temp=15;
+ 773              		.loc 1 244 0
+ 774 0234 B0F5FC6F 		cmp	r0, #2016
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 19
+
+
+ 775 0238 75D2     		bcs	.L94
+ 776 023a 0F20     		movs	r0, #15
+ 777              	.LVL76:
+ 778 023c 7047     		bx	lr
+ 779              	.LVL77:
+ 780              	.L36:
+ 177:main.c        ****         else if(volts<1316) temp=115;
+ 781              		.loc 1 177 0
+ 782 023e 7820     		movs	r0, #120
+ 783              	.LVL78:
+ 784 0240 7047     		bx	lr
+ 785              	.LVL79:
+ 786              	.L37:
+ 178:main.c        ****         else if(volts<1326) temp=110;
+ 787              		.loc 1 178 0
+ 788 0242 7320     		movs	r0, #115
+ 789              	.LVL80:
+ 790 0244 7047     		bx	lr
+ 791              	.LVL81:
+ 792              	.L38:
+ 179:main.c        ****         else if(volts<1337) temp=105;
+ 793              		.loc 1 179 0
+ 794 0246 6E20     		movs	r0, #110
+ 795              	.LVL82:
+ 796 0248 7047     		bx	lr
+ 797              	.LVL83:
+ 798              	.L39:
+ 180:main.c        ****         else if(volts<1348) temp=100;
+ 799              		.loc 1 180 0
+ 800 024a 6920     		movs	r0, #105
+ 801              	.LVL84:
+ 802 024c 7047     		bx	lr
+ 803              	.LVL85:
+ 804              	.L40:
+ 181:main.c        ****         else if(volts<1360) temp=95;
+ 805              		.loc 1 181 0
+ 806 024e 6420     		movs	r0, #100
+ 807              	.LVL86:
+ 808 0250 7047     		bx	lr
+ 809              	.LVL87:
+ 810              	.L41:
+ 182:main.c        ****         else if(volts<1375) temp=90;
+ 811              		.loc 1 182 0
+ 812 0252 5F20     		movs	r0, #95
+ 813              	.LVL88:
+ 814 0254 7047     		bx	lr
+ 815              	.LVL89:
+ 816              	.L42:
+ 183:main.c        ****         else if(volts<1391) temp=85;
+ 817              		.loc 1 183 0
+ 818 0256 5A20     		movs	r0, #90
+ 819              	.LVL90:
+ 820 0258 7047     		bx	lr
+ 821              	.LVL91:
+ 822              	.L43:
+ 184:main.c        ****         else if(volts<1411) temp=80;
+ 823              		.loc 1 184 0
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 20
+
+
+ 824 025a 5520     		movs	r0, #85
+ 825              	.LVL92:
+ 826 025c 7047     		bx	lr
+ 827              	.LVL93:
+ 828              	.L44:
+ 185:main.c        ****         else if(volts<1435) temp=75;
+ 829              		.loc 1 185 0
+ 830 025e 5020     		movs	r0, #80
+ 831              	.LVL94:
+ 832 0260 7047     		bx	lr
+ 833              	.LVL95:
+ 834              	.L45:
+ 186:main.c        ****         else if(volts<1463) temp=70;
+ 835              		.loc 1 186 0
+ 836 0262 4B20     		movs	r0, #75
+ 837              	.LVL96:
+ 838 0264 7047     		bx	lr
+ 839              	.LVL97:
+ 840              	.L46:
+ 187:main.c        ****         else if(volts<1480) temp=65;
+ 841              		.loc 1 187 0
+ 842 0266 4620     		movs	r0, #70
+ 843              	.LVL98:
+ 844 0268 7047     		bx	lr
+ 845              	.LVL99:
+ 846              	.L47:
+ 188:main.c        ****         else if(volts<1487) temp=64;
+ 847              		.loc 1 188 0
+ 848 026a 4120     		movs	r0, #65
+ 849              	.LVL100:
+ 850 026c 7047     		bx	lr
+ 851              	.LVL101:
+ 852              	.L48:
+ 189:main.c        ****         else if(volts<1449) temp=63;
+ 853              		.loc 1 189 0
+ 854 026e 4020     		movs	r0, #64
+ 855              	.LVL102:
+ 856 0270 7047     		bx	lr
+ 857              	.LVL103:
+ 858              	.L49:
+ 190:main.c        ****         else if(volts<1500) temp=62;
+ 859              		.loc 1 190 0
+ 860 0272 3F20     		movs	r0, #63
+ 861              	.LVL104:
+ 862 0274 7047     		bx	lr
+ 863              	.LVL105:
+ 864              	.L50:
+ 191:main.c        ****         else if(volts<1507) temp=61;
+ 865              		.loc 1 191 0
+ 866 0276 3E20     		movs	r0, #62
+ 867              	.LVL106:
+ 868 0278 7047     		bx	lr
+ 869              	.LVL107:
+ 870              	.L51:
+ 193:main.c        ****     }
+ 871              		.loc 1 193 0
+ 872 027a 3C20     		movs	r0, #60
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 21
+
+
+ 873              	.LVL108:
+ 874 027c 7047     		bx	lr
+ 875              	.LVL109:
+ 876              	.L52:
+ 196:main.c        ****         else if(volts<1529) temp=58;
+ 877              		.loc 1 196 0
+ 878 027e 3B20     		movs	r0, #59
+ 879              	.LVL110:
+ 880 0280 7047     		bx	lr
+ 881              	.LVL111:
+ 882              	.L53:
+ 197:main.c        ****         else if(volts<1537) temp=57;
+ 883              		.loc 1 197 0
+ 884 0282 3A20     		movs	r0, #58
+ 885              	.LVL112:
+ 886 0284 7047     		bx	lr
+ 887              	.LVL113:
+ 888              	.L54:
+ 198:main.c        ****         else if(volts<1545) temp=56;
+ 889              		.loc 1 198 0
+ 890 0286 3920     		movs	r0, #57
+ 891              	.LVL114:
+ 892 0288 7047     		bx	lr
+ 893              	.LVL115:
+ 894              	.L55:
+ 199:main.c        ****         else if(volts<1553) temp=55;
+ 895              		.loc 1 199 0
+ 896 028a 3820     		movs	r0, #56
+ 897              	.LVL116:
+ 898 028c 7047     		bx	lr
+ 899              	.LVL117:
+ 900              	.L56:
+ 200:main.c        ****         else if(volts<1561) temp=54;
+ 901              		.loc 1 200 0
+ 902 028e 3720     		movs	r0, #55
+ 903              	.LVL118:
+ 904 0290 7047     		bx	lr
+ 905              	.LVL119:
+ 906              	.L57:
+ 201:main.c        ****         else if(volts<1569) temp=53;
+ 907              		.loc 1 201 0
+ 908 0292 3620     		movs	r0, #54
+ 909              	.LVL120:
+ 910 0294 7047     		bx	lr
+ 911              	.LVL121:
+ 912              	.L58:
+ 202:main.c        ****         else if(volts<1577) temp=52;
+ 913              		.loc 1 202 0
+ 914 0296 3520     		movs	r0, #53
+ 915              	.LVL122:
+ 916 0298 7047     		bx	lr
+ 917              	.LVL123:
+ 918              	.L59:
+ 203:main.c        ****         else if(volts<1586) temp=51;
+ 919              		.loc 1 203 0
+ 920 029a 3420     		movs	r0, #52
+ 921              	.LVL124:
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 22
+
+
+ 922 029c 7047     		bx	lr
+ 923              	.LVL125:
+ 924              	.L60:
+ 204:main.c        ****         else if(volts<1595) temp=50;
+ 925              		.loc 1 204 0
+ 926 029e 3320     		movs	r0, #51
+ 927              	.LVL126:
+ 928 02a0 7047     		bx	lr
+ 929              	.LVL127:
+ 930              	.L61:
+ 205:main.c        ****         else if(volts<1605) temp=49;
+ 931              		.loc 1 205 0
+ 932 02a2 3220     		movs	r0, #50
+ 933              	.LVL128:
+ 934 02a4 7047     		bx	lr
+ 935              	.LVL129:
+ 936              	.L62:
+ 206:main.c        ****         else if(volts<1613) temp=48;
+ 937              		.loc 1 206 0
+ 938 02a6 3120     		movs	r0, #49
+ 939              	.LVL130:
+ 940 02a8 7047     		bx	lr
+ 941              	.LVL131:
+ 942              	.L63:
+ 207:main.c        ****         else if(volts<1622) temp=47;
+ 943              		.loc 1 207 0
+ 944 02aa 3020     		movs	r0, #48
+ 945              	.LVL132:
+ 946 02ac 7047     		bx	lr
+ 947              	.LVL133:
+ 948              	.L64:
+ 208:main.c        ****         else if(volts<1632) temp=46;
+ 949              		.loc 1 208 0
+ 950 02ae 2F20     		movs	r0, #47
+ 951              	.LVL134:
+ 952 02b0 7047     		bx	lr
+ 953              	.LVL135:
+ 954              	.L65:
+ 210:main.c        ****     }
+ 955              		.loc 1 210 0
+ 956 02b2 2D20     		movs	r0, #45
+ 957              	.LVL136:
+ 958 02b4 7047     		bx	lr
+ 959              	.LVL137:
+ 960              	.L66:
+ 213:main.c        ****         else if(volts<1661) temp=43;
+ 961              		.loc 1 213 0
+ 962 02b6 2C20     		movs	r0, #44
+ 963              	.LVL138:
+ 964 02b8 7047     		bx	lr
+ 965              	.LVL139:
+ 966              	.L67:
+ 214:main.c        ****         else if(volts<1671) temp=42;
+ 967              		.loc 1 214 0
+ 968 02ba 2B20     		movs	r0, #43
+ 969              	.LVL140:
+ 970 02bc 7047     		bx	lr
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 23
+
+
+ 971              	.LVL141:
+ 972              	.L68:
+ 215:main.c        ****         else if(volts<1681) temp=41;
+ 973              		.loc 1 215 0
+ 974 02be 2A20     		movs	r0, #42
+ 975              	.LVL142:
+ 976 02c0 7047     		bx	lr
+ 977              	.LVL143:
+ 978              	.L69:
+ 216:main.c        ****         else if(volts<1692) temp=40;
+ 979              		.loc 1 216 0
+ 980 02c2 2920     		movs	r0, #41
+ 981              	.LVL144:
+ 982 02c4 7047     		bx	lr
+ 983              	.LVL145:
+ 984              	.L70:
+ 217:main.c        ****         else if(volts<1702) temp=39;
+ 985              		.loc 1 217 0
+ 986 02c6 2820     		movs	r0, #40
+ 987              	.LVL146:
+ 988 02c8 7047     		bx	lr
+ 989              	.LVL147:
+ 990              	.L71:
+ 218:main.c        ****         else if(volts<1713) temp=38;
+ 991              		.loc 1 218 0
+ 992 02ca 2720     		movs	r0, #39
+ 993              	.LVL148:
+ 994 02cc 7047     		bx	lr
+ 995              	.LVL149:
+ 996              	.L72:
+ 219:main.c        ****         else if(volts<1724) temp=37;
+ 997              		.loc 1 219 0
+ 998 02ce 2620     		movs	r0, #38
+ 999              	.LVL150:
+ 1000 02d0 7047     		bx	lr
+ 1001              	.LVL151:
+ 1002              	.L73:
+ 220:main.c        ****         else if(volts<1735) temp=36;
+ 1003              		.loc 1 220 0
+ 1004 02d2 2520     		movs	r0, #37
+ 1005              	.LVL152:
+ 1006 02d4 7047     		bx	lr
+ 1007              	.LVL153:
+ 1008              	.L74:
+ 221:main.c        ****         else if(volts<1746) temp=35;
+ 1009              		.loc 1 221 0
+ 1010 02d6 2420     		movs	r0, #36
+ 1011              	.LVL154:
+ 1012 02d8 7047     		bx	lr
+ 1013              	.LVL155:
+ 1014              	.L75:
+ 222:main.c        ****         else if(volts<1757) temp=34;
+ 1015              		.loc 1 222 0
+ 1016 02da 2320     		movs	r0, #35
+ 1017              	.LVL156:
+ 1018 02dc 7047     		bx	lr
+ 1019              	.LVL157:
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 24
+
+
+ 1020              	.L76:
+ 223:main.c        ****         else if(volts<1768) temp=33;
+ 1021              		.loc 1 223 0
+ 1022 02de 2220     		movs	r0, #34
+ 1023              	.LVL158:
+ 1024 02e0 7047     		bx	lr
+ 1025              	.LVL159:
+ 1026              	.L77:
+ 224:main.c        ****         else if(volts<1780) temp=32;
+ 1027              		.loc 1 224 0
+ 1028 02e2 2120     		movs	r0, #33
+ 1029              	.LVL160:
+ 1030 02e4 7047     		bx	lr
+ 1031              	.LVL161:
+ 1032              	.L78:
+ 225:main.c        ****         else if(volts<1791) temp=31;
+ 1033              		.loc 1 225 0
+ 1034 02e6 2020     		movs	r0, #32
+ 1035              	.LVL162:
+ 1036 02e8 7047     		bx	lr
+ 1037              	.LVL163:
+ 1038              	.L79:
+ 227:main.c        ****     }
+ 1039              		.loc 1 227 0
+ 1040 02ea 1E20     		movs	r0, #30
+ 1041              	.LVL164:
+ 1042 02ec 7047     		bx	lr
+ 1043              	.LVL165:
+ 1044              	.L80:
+ 230:main.c        ****         else if(volts<1827) temp=28;
+ 1045              		.loc 1 230 0
+ 1046 02ee 1D20     		movs	r0, #29
+ 1047              	.LVL166:
+ 1048 02f0 7047     		bx	lr
+ 1049              	.LVL167:
+ 1050              	.L81:
+ 231:main.c        ****         else if(volts<1839) temp=27;
+ 1051              		.loc 1 231 0
+ 1052 02f2 1C20     		movs	r0, #28
+ 1053              	.LVL168:
+ 1054 02f4 7047     		bx	lr
+ 1055              	.LVL169:
+ 1056              	.L82:
+ 232:main.c        ****         else if(volts<1851) temp=26;
+ 1057              		.loc 1 232 0
+ 1058 02f6 1B20     		movs	r0, #27
+ 1059              	.LVL170:
+ 1060 02f8 7047     		bx	lr
+ 1061              	.LVL171:
+ 1062              	.L83:
+ 233:main.c        ****         else if(volts<1863) temp=25;
+ 1063              		.loc 1 233 0
+ 1064 02fa 1A20     		movs	r0, #26
+ 1065              	.LVL172:
+ 1066 02fc 7047     		bx	lr
+ 1067              	.LVL173:
+ 1068              	.L84:
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 25
+
+
+ 234:main.c        ****         else if(volts<1876) temp=24;
+ 1069              		.loc 1 234 0
+ 1070 02fe 1920     		movs	r0, #25
+ 1071              	.LVL174:
+ 1072 0300 7047     		bx	lr
+ 1073              	.LVL175:
+ 1074              	.L85:
+ 235:main.c        ****         else if(volts<1888) temp=23;
+ 1075              		.loc 1 235 0
+ 1076 0302 1820     		movs	r0, #24
+ 1077              	.LVL176:
+ 1078 0304 7047     		bx	lr
+ 1079              	.LVL177:
+ 1080              	.L86:
+ 236:main.c        ****         else if(volts<1901) temp=22;
+ 1081              		.loc 1 236 0
+ 1082 0306 1720     		movs	r0, #23
+ 1083              	.LVL178:
+ 1084 0308 7047     		bx	lr
+ 1085              	.LVL179:
+ 1086              	.L87:
+ 237:main.c        ****         else if(volts<1913) temp=21;
+ 1087              		.loc 1 237 0
+ 1088 030a 1620     		movs	r0, #22
+ 1089              	.LVL180:
+ 1090 030c 7047     		bx	lr
+ 1091              	.LVL181:
+ 1092              	.L88:
+ 238:main.c        ****         else if(volts<1926) temp=20;
+ 1093              		.loc 1 238 0
+ 1094 030e 1520     		movs	r0, #21
+ 1095              	.LVL182:
+ 1096 0310 7047     		bx	lr
+ 1097              	.LVL183:
+ 1098              	.L89:
+ 239:main.c        ****         else if(volts<1939) temp=19;
+ 1099              		.loc 1 239 0
+ 1100 0312 1420     		movs	r0, #20
+ 1101              	.LVL184:
+ 1102 0314 7047     		bx	lr
+ 1103              	.LVL185:
+ 1104              	.L90:
+ 240:main.c        ****         else if(volts<1952) temp=18;
+ 1105              		.loc 1 240 0
+ 1106 0316 1320     		movs	r0, #19
+ 1107              	.LVL186:
+ 1108 0318 7047     		bx	lr
+ 1109              	.LVL187:
+ 1110              	.L91:
+ 241:main.c        ****         else if(volts<1964) temp=17;
+ 1111              		.loc 1 241 0
+ 1112 031a 1220     		movs	r0, #18
+ 1113              	.LVL188:
+ 1114 031c 7047     		bx	lr
+ 1115              	.LVL189:
+ 1116              	.L92:
+ 242:main.c        ****         else if(volts<1977) temp=16;
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 26
+
+
+ 1117              		.loc 1 242 0
+ 1118 031e 1120     		movs	r0, #17
+ 1119              	.LVL190:
+ 1120 0320 7047     		bx	lr
+ 1121              	.LVL191:
+ 1122              	.L93:
+ 243:main.c        ****         else if(volts<2016) temp=15;
+ 1123              		.loc 1 243 0
+ 1124 0322 1020     		movs	r0, #16
+ 1125              	.LVL192:
+ 1126 0324 7047     		bx	lr
+ 1127              	.LVL193:
+ 1128              	.L94:
+ 245:main.c        ****         else temp=10;
+ 1129              		.loc 1 245 0
+ 1130 0326 0A20     		movs	r0, #10
+ 1131              	.LVL194:
+ 246:main.c        ****     }
+ 247:main.c        ****     return temp;
+ 248:main.c        **** }
+ 1132              		.loc 1 248 0
+ 1133 0328 7047     		bx	lr
+ 1134              		.cfi_endproc
+ 1135              	.LFE68:
+ 1136              		.size	volts2temp, .-volts2temp
+ 1137              		.comm	TX_DATA8,3,4
+ 1138              		.comm	TX_DATA,6,4
+ 1139              		.comm	RX_DATA_P1,6,4
+ 1140 032a 00BF     		.section	.rodata.str1.4,"aMS",%progbits,1
+ 1141              		.align	2
+ 1142              	.LC0:
+ 1143 0000 434F4D20 		.ascii	"COM Port Open\000"
+ 1143      506F7274 
+ 1143      204F7065 
+ 1143      6E00
+ 1144 000e 0000     		.space	2
+ 1145              	.LC1:
+ 1146 0010 23232323 		.ascii	"####### NEW SAMPLES #######\015\012\000"
+ 1146      23232320 
+ 1146      4E455720 
+ 1146      53414D50 
+ 1146      4C455320 
+ 1147 002e 0000     		.space	2
+ 1148              	.LC2:
+ 1149 0030 50696E20 		.ascii	"Pin to GND\015\012\000"
+ 1149      746F2047 
+ 1149      4E440D0A 
+ 1149      00
+ 1150 003d 000000   		.space	3
+ 1151              	.LC3:
+ 1152 0040 53616D70 		.ascii	"Sample: %d mV\015\012\000"
+ 1152      6C653A20 
+ 1152      2564206D 
+ 1152      560D0A00 
+ 1153              	.LC4:
+ 1154 0050 0A504552 		.ascii	"\012PERIPHERAL 1 MAX: %d mV\015\012\000"
+ 1154      49504845 
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 27
+
+
+ 1154      52414C20 
+ 1154      31204D41 
+ 1154      583A2025 
+ 1155 006b 00       		.space	1
+ 1156              	.LC5:
+ 1157 006c 50455249 		.ascii	"PERIPHERAL 1 MIN: %d mV\015\012\000"
+ 1157      50484552 
+ 1157      414C2031 
+ 1157      204D494E 
+ 1157      3A202564 
+ 1158 0086 0000     		.space	2
+ 1159              	.LC6:
+ 1160 0088 50455249 		.ascii	"PERIPHERAL 1 AVG: %d mV\015\012\012\000"
+ 1160      50484552 
+ 1160      414C2031 
+ 1160      20415647 
+ 1160      3A202564 
+ 1161 00a3 00       		.space	1
+ 1162              	.LC7:
+ 1163 00a4 284F5249 		.ascii	"(ORION BMS) MAX: %d C\015\012\000"
+ 1163      4F4E2042 
+ 1163      4D532920 
+ 1163      4D41583A 
+ 1163      20256420 
+ 1164              	.LC8:
+ 1165 00bc 284F5249 		.ascii	"(ORION BMS) MIN: %d C\015\012\000"
+ 1165      4F4E2042 
+ 1165      4D532920 
+ 1165      4D494E3A 
+ 1165      20256420 
+ 1166              	.LC9:
+ 1167 00d4 284F5249 		.ascii	"(ORION BMS) AVG: %d C\015\012\012\000"
+ 1167      4F4E2042 
+ 1167      4D532920 
+ 1167      4156473A 
+ 1167      20256420 
+ 1168              		.text
+ 1169              	.Letext0:
+ 1170              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 1171              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4.
+ 1172              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 1173              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 1174              		.file 6 "Generated_Source\\PSoC5/UART_1.h"
+ 1175              		.file 7 "Generated_Source\\PSoC5/CyLib.h"
+ 1176              		.file 8 "Generated_Source\\PSoC5/AMux_1.h"
+ 1177              		.file 9 "Generated_Source\\PSoC5/ADC_DelSig_1.h"
+ 1178              		.file 10 "c:\\program files (x86)\\cypress\\psoc creator\\4.4\\psoc creator\\import\\gnu\\arm\\5.4
+ 1179              		.file 11 "Generated_Source\\PSoC5/PWM_1.h"
+ 1180              		.file 12 "Generated_Source\\PSoC5/CAN_1.h"
+ 1181              		.section	.debug_info,"",%progbits
+ 1182              	.Ldebug_info0:
+ 1183 0000 EE060000 		.4byte	0x6ee
+ 1184 0004 0400     		.2byte	0x4
+ 1185 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1186 000a 04       		.byte	0x4
+ 1187 000b 01       		.uleb128 0x1
+ 1188 000c 78000000 		.4byte	.LASF44
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 28
+
+
+ 1189 0010 0C       		.byte	0xc
+ 1190 0011 43020000 		.4byte	.LASF45
+ 1191 0015 58020000 		.4byte	.LASF46
+ 1192 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1193 001d 00000000 		.4byte	0
+ 1194 0021 00000000 		.4byte	.Ldebug_line0
+ 1195 0025 02       		.uleb128 0x2
+ 1196 0026 01       		.byte	0x1
+ 1197 0027 06       		.byte	0x6
+ 1198 0028 F4020000 		.4byte	.LASF0
+ 1199 002c 02       		.uleb128 0x2
+ 1200 002d 01       		.byte	0x1
+ 1201 002e 08       		.byte	0x8
+ 1202 002f 6A000000 		.4byte	.LASF1
+ 1203 0033 02       		.uleb128 0x2
+ 1204 0034 02       		.byte	0x2
+ 1205 0035 05       		.byte	0x5
+ 1206 0036 4D000000 		.4byte	.LASF2
+ 1207 003a 02       		.uleb128 0x2
+ 1208 003b 02       		.byte	0x2
+ 1209 003c 07       		.byte	0x7
+ 1210 003d 3A000000 		.4byte	.LASF3
+ 1211 0041 03       		.uleb128 0x3
+ 1212 0042 30000000 		.4byte	.LASF9
+ 1213 0046 02       		.byte	0x2
+ 1214 0047 3F       		.byte	0x3f
+ 1215 0048 4C000000 		.4byte	0x4c
+ 1216 004c 02       		.uleb128 0x2
+ 1217 004d 04       		.byte	0x4
+ 1218 004e 05       		.byte	0x5
+ 1219 004f B9020000 		.4byte	.LASF4
+ 1220 0053 02       		.uleb128 0x2
+ 1221 0054 04       		.byte	0x4
+ 1222 0055 07       		.byte	0x7
+ 1223 0056 49010000 		.4byte	.LASF5
+ 1224 005a 02       		.uleb128 0x2
+ 1225 005b 08       		.byte	0x8
+ 1226 005c 05       		.byte	0x5
+ 1227 005d 00000000 		.4byte	.LASF6
+ 1228 0061 02       		.uleb128 0x2
+ 1229 0062 08       		.byte	0x8
+ 1230 0063 07       		.byte	0x7
+ 1231 0064 E6010000 		.4byte	.LASF7
+ 1232 0068 04       		.uleb128 0x4
+ 1233 0069 04       		.byte	0x4
+ 1234 006a 05       		.byte	0x5
+ 1235 006b 696E7400 		.ascii	"int\000"
+ 1236 006f 02       		.uleb128 0x2
+ 1237 0070 04       		.byte	0x4
+ 1238 0071 07       		.byte	0x7
+ 1239 0072 BC010000 		.4byte	.LASF8
+ 1240 0076 03       		.uleb128 0x3
+ 1241 0077 03020000 		.4byte	.LASF10
+ 1242 007b 03       		.byte	0x3
+ 1243 007c 2C       		.byte	0x2c
+ 1244 007d 41000000 		.4byte	0x41
+ 1245 0081 05       		.uleb128 0x5
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 29
+
+
+ 1246 0082 64000000 		.4byte	.LASF11
+ 1247 0086 04       		.byte	0x4
+ 1248 0087 E801     		.2byte	0x1e8
+ 1249 0089 2C000000 		.4byte	0x2c
+ 1250 008d 05       		.uleb128 0x5
+ 1251 008e 84010000 		.4byte	.LASF12
+ 1252 0092 04       		.byte	0x4
+ 1253 0093 E901     		.2byte	0x1e9
+ 1254 0095 3A000000 		.4byte	0x3a
+ 1255 0099 02       		.uleb128 0x2
+ 1256 009a 04       		.byte	0x4
+ 1257 009b 04       		.byte	0x4
+ 1258 009c 5E000000 		.4byte	.LASF13
+ 1259 00a0 02       		.uleb128 0x2
+ 1260 00a1 08       		.byte	0x8
+ 1261 00a2 04       		.byte	0x4
+ 1262 00a3 57000000 		.4byte	.LASF14
+ 1263 00a7 02       		.uleb128 0x2
+ 1264 00a8 01       		.byte	0x1
+ 1265 00a9 08       		.byte	0x8
+ 1266 00aa 4A020000 		.4byte	.LASF15
+ 1267 00ae 02       		.uleb128 0x2
+ 1268 00af 08       		.byte	0x8
+ 1269 00b0 04       		.byte	0x4
+ 1270 00b1 DC020000 		.4byte	.LASF16
+ 1271 00b5 02       		.uleb128 0x2
+ 1272 00b6 04       		.byte	0x4
+ 1273 00b7 07       		.byte	0x7
+ 1274 00b8 3A020000 		.4byte	.LASF17
+ 1275 00bc 06       		.uleb128 0x6
+ 1276 00bd 6D617800 		.ascii	"max\000"
+ 1277 00c1 01       		.byte	0x1
+ 1278 00c2 1C       		.byte	0x1c
+ 1279 00c3 8D000000 		.4byte	0x8d
+ 1280 00c7 00000000 		.4byte	.LFB64
+ 1281 00cb 1E000000 		.4byte	.LFE64-.LFB64
+ 1282 00cf 01       		.uleb128 0x1
+ 1283 00d0 9C       		.byte	0x9c
+ 1284 00d1 0C010000 		.4byte	0x10c
+ 1285 00d5 07       		.uleb128 0x7
+ 1286 00d6 61727200 		.ascii	"arr\000"
+ 1287 00da 01       		.byte	0x1
+ 1288 00db 1C       		.byte	0x1c
+ 1289 00dc 0C010000 		.4byte	0x10c
+ 1290 00e0 00000000 		.4byte	.LLST0
+ 1291 00e4 08       		.uleb128 0x8
+ 1292 00e5 6E00     		.ascii	"n\000"
+ 1293 00e7 01       		.byte	0x1
+ 1294 00e8 1C       		.byte	0x1c
+ 1295 00e9 68000000 		.4byte	0x68
+ 1296 00ed 01       		.uleb128 0x1
+ 1297 00ee 51       		.byte	0x51
+ 1298 00ef 09       		.uleb128 0x9
+ 1299 00f0 6900     		.ascii	"i\000"
+ 1300 00f2 01       		.byte	0x1
+ 1301 00f3 1E       		.byte	0x1e
+ 1302 00f4 68000000 		.4byte	0x68
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 30
+
+
+ 1303 00f8 2C000000 		.4byte	.LLST1
+ 1304 00fc 09       		.uleb128 0x9
+ 1305 00fd 6D617800 		.ascii	"max\000"
+ 1306 0101 01       		.byte	0x1
+ 1307 0102 1F       		.byte	0x1f
+ 1308 0103 68000000 		.4byte	0x68
+ 1309 0107 4B000000 		.4byte	.LLST2
+ 1310 010b 00       		.byte	0
+ 1311 010c 0A       		.uleb128 0xa
+ 1312 010d 04       		.byte	0x4
+ 1313 010e 8D000000 		.4byte	0x8d
+ 1314 0112 06       		.uleb128 0x6
+ 1315 0113 6D696E00 		.ascii	"min\000"
+ 1316 0117 01       		.byte	0x1
+ 1317 0118 28       		.byte	0x28
+ 1318 0119 8D000000 		.4byte	0x8d
+ 1319 011d 00000000 		.4byte	.LFB65
+ 1320 0121 1E000000 		.4byte	.LFE65-.LFB65
+ 1321 0125 01       		.uleb128 0x1
+ 1322 0126 9C       		.byte	0x9c
+ 1323 0127 6F010000 		.4byte	0x16f
+ 1324 012b 07       		.uleb128 0x7
+ 1325 012c 61727200 		.ascii	"arr\000"
+ 1326 0130 01       		.byte	0x1
+ 1327 0131 28       		.byte	0x28
+ 1328 0132 0C010000 		.4byte	0x10c
+ 1329 0136 6A000000 		.4byte	.LLST3
+ 1330 013a 08       		.uleb128 0x8
+ 1331 013b 6E00     		.ascii	"n\000"
+ 1332 013d 01       		.byte	0x1
+ 1333 013e 28       		.byte	0x28
+ 1334 013f 68000000 		.4byte	0x68
+ 1335 0143 01       		.uleb128 0x1
+ 1336 0144 51       		.byte	0x51
+ 1337 0145 07       		.uleb128 0x7
+ 1338 0146 6D617800 		.ascii	"max\000"
+ 1339 014a 01       		.byte	0x1
+ 1340 014b 28       		.byte	0x28
+ 1341 014c 68000000 		.4byte	0x68
+ 1342 0150 8B000000 		.4byte	.LLST4
+ 1343 0154 09       		.uleb128 0x9
+ 1344 0155 6900     		.ascii	"i\000"
+ 1345 0157 01       		.byte	0x1
+ 1346 0158 2A       		.byte	0x2a
+ 1347 0159 68000000 		.4byte	0x68
+ 1348 015d AC000000 		.4byte	.LLST5
+ 1349 0161 0B       		.uleb128 0xb
+ 1350 0162 6D696E00 		.ascii	"min\000"
+ 1351 0166 01       		.byte	0x1
+ 1352 0167 2B       		.byte	0x2b
+ 1353 0168 68000000 		.4byte	0x68
+ 1354 016c 01       		.uleb128 0x1
+ 1355 016d 52       		.byte	0x52
+ 1356 016e 00       		.byte	0
+ 1357 016f 06       		.uleb128 0x6
+ 1358 0170 61766700 		.ascii	"avg\000"
+ 1359 0174 01       		.byte	0x1
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 31
+
+
+ 1360 0175 35       		.byte	0x35
+ 1361 0176 8D000000 		.4byte	0x8d
+ 1362 017a 00000000 		.4byte	.LFB66
+ 1363 017e 26000000 		.4byte	.LFE66-.LFB66
+ 1364 0182 01       		.uleb128 0x1
+ 1365 0183 9C       		.byte	0x9c
+ 1366 0184 DB010000 		.4byte	0x1db
+ 1367 0188 07       		.uleb128 0x7
+ 1368 0189 61727200 		.ascii	"arr\000"
+ 1369 018d 01       		.byte	0x1
+ 1370 018e 35       		.byte	0x35
+ 1371 018f 0C010000 		.4byte	0x10c
+ 1372 0193 CB000000 		.4byte	.LLST6
+ 1373 0197 08       		.uleb128 0x8
+ 1374 0198 6E00     		.ascii	"n\000"
+ 1375 019a 01       		.byte	0x1
+ 1376 019b 35       		.byte	0x35
+ 1377 019c 68000000 		.4byte	0x68
+ 1378 01a0 01       		.uleb128 0x1
+ 1379 01a1 51       		.byte	0x51
+ 1380 01a2 08       		.uleb128 0x8
+ 1381 01a3 6D617800 		.ascii	"max\000"
+ 1382 01a7 01       		.byte	0x1
+ 1383 01a8 35       		.byte	0x35
+ 1384 01a9 68000000 		.4byte	0x68
+ 1385 01ad 01       		.uleb128 0x1
+ 1386 01ae 52       		.byte	0x52
+ 1387 01af 09       		.uleb128 0x9
+ 1388 01b0 6900     		.ascii	"i\000"
+ 1389 01b2 01       		.byte	0x1
+ 1390 01b3 37       		.byte	0x37
+ 1391 01b4 68000000 		.4byte	0x68
+ 1392 01b8 EC000000 		.4byte	.LLST7
+ 1393 01bc 09       		.uleb128 0x9
+ 1394 01bd 73756D00 		.ascii	"sum\000"
+ 1395 01c1 01       		.byte	0x1
+ 1396 01c2 38       		.byte	0x38
+ 1397 01c3 68000000 		.4byte	0x68
+ 1398 01c7 0B010000 		.4byte	.LLST8
+ 1399 01cb 0C       		.uleb128 0xc
+ 1400 01cc 23000000 		.4byte	.LASF18
+ 1401 01d0 01       		.byte	0x1
+ 1402 01d1 39       		.byte	0x39
+ 1403 01d2 68000000 		.4byte	0x68
+ 1404 01d6 29010000 		.4byte	.LLST9
+ 1405 01da 00       		.byte	0
+ 1406 01db 0D       		.uleb128 0xd
+ 1407 01dc 8B010000 		.4byte	.LASF47
+ 1408 01e0 01       		.byte	0x1
+ 1409 01e1 46       		.byte	0x46
+ 1410 01e2 68000000 		.4byte	0x68
+ 1411 01e6 00000000 		.4byte	.LFB67
+ 1412 01ea 10020000 		.4byte	.LFE67-.LFB67
+ 1413 01ee 01       		.uleb128 0x1
+ 1414 01ef 9C       		.byte	0x9c
+ 1415 01f0 83050000 		.4byte	0x583
+ 1416 01f4 0E       		.uleb128 0xe
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 32
+
+
+ 1417 01f5 0B020000 		.4byte	.LASF19
+ 1418 01f9 01       		.byte	0x1
+ 1419 01fa 49       		.byte	0x49
+ 1420 01fb 83050000 		.4byte	0x583
+ 1421 01ff 02       		.uleb128 0x2
+ 1422 0200 91       		.byte	0x91
+ 1423 0201 48       		.sleb128 -56
+ 1424 0202 0F       		.uleb128 0xf
+ 1425 0203 24000000 		.4byte	.LBB2
+ 1426 0207 B0010000 		.4byte	.LBE2-.LBB2
+ 1427 020b 39050000 		.4byte	0x539
+ 1428 020f 0E       		.uleb128 0xe
+ 1429 0210 0E000000 		.4byte	.LASF20
+ 1430 0214 01       		.byte	0x1
+ 1431 0215 58       		.byte	0x58
+ 1432 0216 93050000 		.4byte	0x593
+ 1433 021a 03       		.uleb128 0x3
+ 1434 021b 91       		.byte	0x91
+ 1435 021c B87F     		.sleb128 -72
+ 1436 021e 09       		.uleb128 0x9
+ 1437 021f 6900     		.ascii	"i\000"
+ 1438 0221 01       		.byte	0x1
+ 1439 0222 5F       		.byte	0x5f
+ 1440 0223 68000000 		.4byte	0x68
+ 1441 0227 48010000 		.4byte	.LLST10
+ 1442 022b 10       		.uleb128 0x10
+ 1443 022c 3A000000 		.4byte	.LVL29
+ 1444 0230 3F060000 		.4byte	0x63f
+ 1445 0234 3F020000 		.4byte	0x23f
+ 1446 0238 11       		.uleb128 0x11
+ 1447 0239 01       		.uleb128 0x1
+ 1448 023a 50       		.byte	0x50
+ 1449 023b 02       		.uleb128 0x2
+ 1450 023c 74       		.byte	0x74
+ 1451 023d 64       		.sleb128 -28
+ 1452 023e 00       		.byte	0
+ 1453 023f 10       		.uleb128 0x10
+ 1454 0240 40000000 		.4byte	.LVL30
+ 1455 0244 4A060000 		.4byte	0x64a
+ 1456 0248 53020000 		.4byte	0x253
+ 1457 024c 11       		.uleb128 0x11
+ 1458 024d 01       		.uleb128 0x1
+ 1459 024e 50       		.byte	0x50
+ 1460 024f 02       		.uleb128 0x2
+ 1461 0250 08       		.byte	0x8
+ 1462 0251 64       		.byte	0x64
+ 1463 0252 00       		.byte	0
+ 1464 0253 10       		.uleb128 0x10
+ 1465 0254 4A000000 		.4byte	.LVL32
+ 1466 0258 55060000 		.4byte	0x655
+ 1467 025c 67020000 		.4byte	0x267
+ 1468 0260 11       		.uleb128 0x11
+ 1469 0261 01       		.uleb128 0x1
+ 1470 0262 50       		.byte	0x50
+ 1471 0263 02       		.uleb128 0x2
+ 1472 0264 74       		.byte	0x74
+ 1473 0265 00       		.sleb128 0
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 33
+
+
+ 1474 0266 00       		.byte	0
+ 1475 0267 10       		.uleb128 0x10
+ 1476 0268 50000000 		.4byte	.LVL33
+ 1477 026c 60060000 		.4byte	0x660
+ 1478 0270 7A020000 		.4byte	0x27a
+ 1479 0274 11       		.uleb128 0x11
+ 1480 0275 01       		.uleb128 0x1
+ 1481 0276 50       		.byte	0x50
+ 1482 0277 01       		.uleb128 0x1
+ 1483 0278 31       		.byte	0x31
+ 1484 0279 00       		.byte	0
+ 1485 027a 12       		.uleb128 0x12
+ 1486 027b 56000000 		.4byte	.LVL34
+ 1487 027f 6B060000 		.4byte	0x66b
+ 1488 0283 12       		.uleb128 0x12
+ 1489 0284 5A000000 		.4byte	.LVL35
+ 1490 0288 76060000 		.4byte	0x676
+ 1491 028c 10       		.uleb128 0x10
+ 1492 028d 90000000 		.4byte	.LVL36
+ 1493 0291 3F060000 		.4byte	0x63f
+ 1494 0295 A0020000 		.4byte	0x2a0
+ 1495 0299 11       		.uleb128 0x11
+ 1496 029a 01       		.uleb128 0x1
+ 1497 029b 50       		.byte	0x50
+ 1498 029c 02       		.uleb128 0x2
+ 1499 029d 75       		.byte	0x75
+ 1500 029e 74       		.sleb128 -12
+ 1501 029f 00       		.byte	0
+ 1502 02a0 10       		.uleb128 0x10
+ 1503 02a1 9A000000 		.4byte	.LVL37
+ 1504 02a5 81060000 		.4byte	0x681
+ 1505 02a9 BD020000 		.4byte	0x2bd
+ 1506 02ad 11       		.uleb128 0x11
+ 1507 02ae 01       		.uleb128 0x1
+ 1508 02af 50       		.byte	0x50
+ 1509 02b0 02       		.uleb128 0x2
+ 1510 02b1 91       		.byte	0x91
+ 1511 02b2 48       		.sleb128 -56
+ 1512 02b3 11       		.uleb128 0x11
+ 1513 02b4 01       		.uleb128 0x1
+ 1514 02b5 51       		.byte	0x51
+ 1515 02b6 05       		.uleb128 0x5
+ 1516 02b7 03       		.byte	0x3
+ 1517 02b8 40000000 		.4byte	.LC3
+ 1518 02bc 00       		.byte	0
+ 1519 02bd 10       		.uleb128 0x10
+ 1520 02be A0000000 		.4byte	.LVL38
+ 1521 02c2 3F060000 		.4byte	0x63f
+ 1522 02c6 D1020000 		.4byte	0x2d1
+ 1523 02ca 11       		.uleb128 0x11
+ 1524 02cb 01       		.uleb128 0x1
+ 1525 02cc 50       		.byte	0x50
+ 1526 02cd 02       		.uleb128 0x2
+ 1527 02ce 91       		.byte	0x91
+ 1528 02cf 48       		.sleb128 -56
+ 1529 02d0 00       		.byte	0
+ 1530 02d1 10       		.uleb128 0x10
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 34
+
+
+ 1531 02d2 A6000000 		.4byte	.LVL39
+ 1532 02d6 4A060000 		.4byte	0x64a
+ 1533 02da E5020000 		.4byte	0x2e5
+ 1534 02de 11       		.uleb128 0x11
+ 1535 02df 01       		.uleb128 0x1
+ 1536 02e0 50       		.byte	0x50
+ 1537 02e1 02       		.uleb128 0x2
+ 1538 02e2 08       		.byte	0x8
+ 1539 02e3 64       		.byte	0x64
+ 1540 02e4 00       		.byte	0
+ 1541 02e5 10       		.uleb128 0x10
+ 1542 02e6 B8000000 		.4byte	.LVL41
+ 1543 02ea 81060000 		.4byte	0x681
+ 1544 02ee 02030000 		.4byte	0x302
+ 1545 02f2 11       		.uleb128 0x11
+ 1546 02f3 01       		.uleb128 0x1
+ 1547 02f4 50       		.byte	0x50
+ 1548 02f5 02       		.uleb128 0x2
+ 1549 02f6 91       		.byte	0x91
+ 1550 02f7 48       		.sleb128 -56
+ 1551 02f8 11       		.uleb128 0x11
+ 1552 02f9 01       		.uleb128 0x1
+ 1553 02fa 51       		.byte	0x51
+ 1554 02fb 05       		.uleb128 0x5
+ 1555 02fc 03       		.byte	0x3
+ 1556 02fd 50000000 		.4byte	.LC4
+ 1557 0301 00       		.byte	0
+ 1558 0302 10       		.uleb128 0x10
+ 1559 0303 BE000000 		.4byte	.LVL42
+ 1560 0307 3F060000 		.4byte	0x63f
+ 1561 030b 16030000 		.4byte	0x316
+ 1562 030f 11       		.uleb128 0x11
+ 1563 0310 01       		.uleb128 0x1
+ 1564 0311 50       		.byte	0x50
+ 1565 0312 02       		.uleb128 0x2
+ 1566 0313 91       		.byte	0x91
+ 1567 0314 48       		.sleb128 -56
+ 1568 0315 00       		.byte	0
+ 1569 0316 10       		.uleb128 0x10
+ 1570 0317 C8000000 		.4byte	.LVL43
+ 1571 031b 81060000 		.4byte	0x681
+ 1572 031f 33030000 		.4byte	0x333
+ 1573 0323 11       		.uleb128 0x11
+ 1574 0324 01       		.uleb128 0x1
+ 1575 0325 50       		.byte	0x50
+ 1576 0326 02       		.uleb128 0x2
+ 1577 0327 91       		.byte	0x91
+ 1578 0328 48       		.sleb128 -56
+ 1579 0329 11       		.uleb128 0x11
+ 1580 032a 01       		.uleb128 0x1
+ 1581 032b 51       		.byte	0x51
+ 1582 032c 05       		.uleb128 0x5
+ 1583 032d 03       		.byte	0x3
+ 1584 032e 6C000000 		.4byte	.LC5
+ 1585 0332 00       		.byte	0
+ 1586 0333 10       		.uleb128 0x10
+ 1587 0334 CE000000 		.4byte	.LVL44
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 35
+
+
+ 1588 0338 3F060000 		.4byte	0x63f
+ 1589 033c 47030000 		.4byte	0x347
+ 1590 0340 11       		.uleb128 0x11
+ 1591 0341 01       		.uleb128 0x1
+ 1592 0342 50       		.byte	0x50
+ 1593 0343 02       		.uleb128 0x2
+ 1594 0344 91       		.byte	0x91
+ 1595 0345 48       		.sleb128 -56
+ 1596 0346 00       		.byte	0
+ 1597 0347 10       		.uleb128 0x10
+ 1598 0348 D8000000 		.4byte	.LVL45
+ 1599 034c 81060000 		.4byte	0x681
+ 1600 0350 64030000 		.4byte	0x364
+ 1601 0354 11       		.uleb128 0x11
+ 1602 0355 01       		.uleb128 0x1
+ 1603 0356 50       		.byte	0x50
+ 1604 0357 02       		.uleb128 0x2
+ 1605 0358 91       		.byte	0x91
+ 1606 0359 48       		.sleb128 -56
+ 1607 035a 11       		.uleb128 0x11
+ 1608 035b 01       		.uleb128 0x1
+ 1609 035c 51       		.byte	0x51
+ 1610 035d 05       		.uleb128 0x5
+ 1611 035e 03       		.byte	0x3
+ 1612 035f 88000000 		.4byte	.LC6
+ 1613 0363 00       		.byte	0
+ 1614 0364 10       		.uleb128 0x10
+ 1615 0365 DE000000 		.4byte	.LVL46
+ 1616 0369 3F060000 		.4byte	0x63f
+ 1617 036d 78030000 		.4byte	0x378
+ 1618 0371 11       		.uleb128 0x11
+ 1619 0372 01       		.uleb128 0x1
+ 1620 0373 50       		.byte	0x50
+ 1621 0374 02       		.uleb128 0x2
+ 1622 0375 91       		.byte	0x91
+ 1623 0376 48       		.sleb128 -56
+ 1624 0377 00       		.byte	0
+ 1625 0378 10       		.uleb128 0x10
+ 1626 0379 E4000000 		.4byte	.LVL47
+ 1627 037d 4A060000 		.4byte	0x64a
+ 1628 0381 8C030000 		.4byte	0x38c
+ 1629 0385 11       		.uleb128 0x11
+ 1630 0386 01       		.uleb128 0x1
+ 1631 0387 50       		.byte	0x50
+ 1632 0388 02       		.uleb128 0x2
+ 1633 0389 08       		.byte	0x8
+ 1634 038a 64       		.byte	0x64
+ 1635 038b 00       		.byte	0
+ 1636 038c 10       		.uleb128 0x10
+ 1637 038d F8000000 		.4byte	.LVL48
+ 1638 0391 BC000000 		.4byte	0xbc
+ 1639 0395 A5030000 		.4byte	0x3a5
+ 1640 0399 11       		.uleb128 0x11
+ 1641 039a 01       		.uleb128 0x1
+ 1642 039b 50       		.byte	0x50
+ 1643 039c 02       		.uleb128 0x2
+ 1644 039d 7D       		.byte	0x7d
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 36
+
+
+ 1645 039e 00       		.sleb128 0
+ 1646 039f 11       		.uleb128 0x11
+ 1647 03a0 01       		.uleb128 0x1
+ 1648 03a1 51       		.byte	0x51
+ 1649 03a2 01       		.uleb128 0x1
+ 1650 03a3 38       		.byte	0x38
+ 1651 03a4 00       		.byte	0
+ 1652 03a5 10       		.uleb128 0x10
+ 1653 03a6 08010000 		.4byte	.LVL50
+ 1654 03aa 12010000 		.4byte	0x112
+ 1655 03ae C4030000 		.4byte	0x3c4
+ 1656 03b2 11       		.uleb128 0x11
+ 1657 03b3 01       		.uleb128 0x1
+ 1658 03b4 50       		.byte	0x50
+ 1659 03b5 02       		.uleb128 0x2
+ 1660 03b6 7D       		.byte	0x7d
+ 1661 03b7 00       		.sleb128 0
+ 1662 03b8 11       		.uleb128 0x11
+ 1663 03b9 01       		.uleb128 0x1
+ 1664 03ba 51       		.byte	0x51
+ 1665 03bb 01       		.uleb128 0x1
+ 1666 03bc 38       		.byte	0x38
+ 1667 03bd 11       		.uleb128 0x11
+ 1668 03be 01       		.uleb128 0x1
+ 1669 03bf 52       		.byte	0x52
+ 1670 03c0 02       		.uleb128 0x2
+ 1671 03c1 74       		.byte	0x74
+ 1672 03c2 00       		.sleb128 0
+ 1673 03c3 00       		.byte	0
+ 1674 03c4 10       		.uleb128 0x10
+ 1675 03c5 16010000 		.4byte	.LVL51
+ 1676 03c9 6F010000 		.4byte	0x16f
+ 1677 03cd E3030000 		.4byte	0x3e3
+ 1678 03d1 11       		.uleb128 0x11
+ 1679 03d2 01       		.uleb128 0x1
+ 1680 03d3 50       		.byte	0x50
+ 1681 03d4 02       		.uleb128 0x2
+ 1682 03d5 7D       		.byte	0x7d
+ 1683 03d6 00       		.sleb128 0
+ 1684 03d7 11       		.uleb128 0x11
+ 1685 03d8 01       		.uleb128 0x1
+ 1686 03d9 51       		.byte	0x51
+ 1687 03da 01       		.uleb128 0x1
+ 1688 03db 38       		.byte	0x38
+ 1689 03dc 11       		.uleb128 0x11
+ 1690 03dd 01       		.uleb128 0x1
+ 1691 03de 52       		.byte	0x52
+ 1692 03df 02       		.uleb128 0x2
+ 1693 03e0 74       		.byte	0x74
+ 1694 03e1 00       		.sleb128 0
+ 1695 03e2 00       		.byte	0
+ 1696 03e3 10       		.uleb128 0x10
+ 1697 03e4 4C010000 		.4byte	.LVL52
+ 1698 03e8 8C060000 		.4byte	0x68c
+ 1699 03ec F7030000 		.4byte	0x3f7
+ 1700 03f0 11       		.uleb128 0x11
+ 1701 03f1 01       		.uleb128 0x1
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 37
+
+
+ 1702 03f2 50       		.byte	0x50
+ 1703 03f3 02       		.uleb128 0x2
+ 1704 03f4 08       		.byte	0x8
+ 1705 03f5 28       		.byte	0x28
+ 1706 03f6 00       		.byte	0
+ 1707 03f7 10       		.uleb128 0x10
+ 1708 03f8 68010000 		.4byte	.LVL53
+ 1709 03fc 8C060000 		.4byte	0x68c
+ 1710 0400 0B040000 		.4byte	0x40b
+ 1711 0404 11       		.uleb128 0x11
+ 1712 0405 01       		.uleb128 0x1
+ 1713 0406 50       		.byte	0x50
+ 1714 0407 02       		.uleb128 0x2
+ 1715 0408 74       		.byte	0x74
+ 1716 0409 28       		.sleb128 40
+ 1717 040a 00       		.byte	0
+ 1718 040b 10       		.uleb128 0x10
+ 1719 040c 74010000 		.4byte	.LVL54
+ 1720 0410 8C060000 		.4byte	0x68c
+ 1721 0414 1F040000 		.4byte	0x41f
+ 1722 0418 11       		.uleb128 0x11
+ 1723 0419 01       		.uleb128 0x1
+ 1724 041a 50       		.byte	0x50
+ 1725 041b 02       		.uleb128 0x2
+ 1726 041c 08       		.byte	0x8
+ 1727 041d 64       		.byte	0x64
+ 1728 041e 00       		.byte	0
+ 1729 041f 10       		.uleb128 0x10
+ 1730 0420 7C010000 		.4byte	.LVL55
+ 1731 0424 8C060000 		.4byte	0x68c
+ 1732 0428 33040000 		.4byte	0x433
+ 1733 042c 11       		.uleb128 0x11
+ 1734 042d 01       		.uleb128 0x1
+ 1735 042e 50       		.byte	0x50
+ 1736 042f 02       		.uleb128 0x2
+ 1737 0430 08       		.byte	0x8
+ 1738 0431 28       		.byte	0x28
+ 1739 0432 00       		.byte	0
+ 1740 0433 10       		.uleb128 0x10
+ 1741 0434 88010000 		.4byte	.LVL56
+ 1742 0438 81060000 		.4byte	0x681
+ 1743 043c 50040000 		.4byte	0x450
+ 1744 0440 11       		.uleb128 0x11
+ 1745 0441 01       		.uleb128 0x1
+ 1746 0442 50       		.byte	0x50
+ 1747 0443 02       		.uleb128 0x2
+ 1748 0444 91       		.byte	0x91
+ 1749 0445 48       		.sleb128 -56
+ 1750 0446 11       		.uleb128 0x11
+ 1751 0447 01       		.uleb128 0x1
+ 1752 0448 51       		.byte	0x51
+ 1753 0449 05       		.uleb128 0x5
+ 1754 044a 03       		.byte	0x3
+ 1755 044b A4000000 		.4byte	.LC7
+ 1756 044f 00       		.byte	0
+ 1757 0450 10       		.uleb128 0x10
+ 1758 0451 8E010000 		.4byte	.LVL57
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 38
+
+
+ 1759 0455 3F060000 		.4byte	0x63f
+ 1760 0459 64040000 		.4byte	0x464
+ 1761 045d 11       		.uleb128 0x11
+ 1762 045e 01       		.uleb128 0x1
+ 1763 045f 50       		.byte	0x50
+ 1764 0460 02       		.uleb128 0x2
+ 1765 0461 91       		.byte	0x91
+ 1766 0462 48       		.sleb128 -56
+ 1767 0463 00       		.byte	0
+ 1768 0464 10       		.uleb128 0x10
+ 1769 0465 94010000 		.4byte	.LVL58
+ 1770 0469 4A060000 		.4byte	0x64a
+ 1771 046d 78040000 		.4byte	0x478
+ 1772 0471 11       		.uleb128 0x11
+ 1773 0472 01       		.uleb128 0x1
+ 1774 0473 50       		.byte	0x50
+ 1775 0474 02       		.uleb128 0x2
+ 1776 0475 08       		.byte	0x8
+ 1777 0476 64       		.byte	0x64
+ 1778 0477 00       		.byte	0
+ 1779 0478 10       		.uleb128 0x10
+ 1780 0479 9E010000 		.4byte	.LVL59
+ 1781 047d 81060000 		.4byte	0x681
+ 1782 0481 95040000 		.4byte	0x495
+ 1783 0485 11       		.uleb128 0x11
+ 1784 0486 01       		.uleb128 0x1
+ 1785 0487 50       		.byte	0x50
+ 1786 0488 02       		.uleb128 0x2
+ 1787 0489 91       		.byte	0x91
+ 1788 048a 48       		.sleb128 -56
+ 1789 048b 11       		.uleb128 0x11
+ 1790 048c 01       		.uleb128 0x1
+ 1791 048d 51       		.byte	0x51
+ 1792 048e 05       		.uleb128 0x5
+ 1793 048f 03       		.byte	0x3
+ 1794 0490 BC000000 		.4byte	.LC8
+ 1795 0494 00       		.byte	0
+ 1796 0495 10       		.uleb128 0x10
+ 1797 0496 A4010000 		.4byte	.LVL60
+ 1798 049a 3F060000 		.4byte	0x63f
+ 1799 049e A9040000 		.4byte	0x4a9
+ 1800 04a2 11       		.uleb128 0x11
+ 1801 04a3 01       		.uleb128 0x1
+ 1802 04a4 50       		.byte	0x50
+ 1803 04a5 02       		.uleb128 0x2
+ 1804 04a6 91       		.byte	0x91
+ 1805 04a7 48       		.sleb128 -56
+ 1806 04a8 00       		.byte	0
+ 1807 04a9 10       		.uleb128 0x10
+ 1808 04aa AA010000 		.4byte	.LVL61
+ 1809 04ae 4A060000 		.4byte	0x64a
+ 1810 04b2 BD040000 		.4byte	0x4bd
+ 1811 04b6 11       		.uleb128 0x11
+ 1812 04b7 01       		.uleb128 0x1
+ 1813 04b8 50       		.byte	0x50
+ 1814 04b9 02       		.uleb128 0x2
+ 1815 04ba 08       		.byte	0x8
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 39
+
+
+ 1816 04bb 64       		.byte	0x64
+ 1817 04bc 00       		.byte	0
+ 1818 04bd 10       		.uleb128 0x10
+ 1819 04be B4010000 		.4byte	.LVL62
+ 1820 04c2 81060000 		.4byte	0x681
+ 1821 04c6 DA040000 		.4byte	0x4da
+ 1822 04ca 11       		.uleb128 0x11
+ 1823 04cb 01       		.uleb128 0x1
+ 1824 04cc 50       		.byte	0x50
+ 1825 04cd 02       		.uleb128 0x2
+ 1826 04ce 91       		.byte	0x91
+ 1827 04cf 48       		.sleb128 -56
+ 1828 04d0 11       		.uleb128 0x11
+ 1829 04d1 01       		.uleb128 0x1
+ 1830 04d2 51       		.byte	0x51
+ 1831 04d3 05       		.uleb128 0x5
+ 1832 04d4 03       		.byte	0x3
+ 1833 04d5 D4000000 		.4byte	.LC9
+ 1834 04d9 00       		.byte	0
+ 1835 04da 10       		.uleb128 0x10
+ 1836 04db BA010000 		.4byte	.LVL63
+ 1837 04df 3F060000 		.4byte	0x63f
+ 1838 04e3 EE040000 		.4byte	0x4ee
+ 1839 04e7 11       		.uleb128 0x11
+ 1840 04e8 01       		.uleb128 0x1
+ 1841 04e9 50       		.byte	0x50
+ 1842 04ea 02       		.uleb128 0x2
+ 1843 04eb 91       		.byte	0x91
+ 1844 04ec 48       		.sleb128 -56
+ 1845 04ed 00       		.byte	0
+ 1846 04ee 10       		.uleb128 0x10
+ 1847 04ef C0010000 		.4byte	.LVL64
+ 1848 04f3 4A060000 		.4byte	0x64a
+ 1849 04f7 02050000 		.4byte	0x502
+ 1850 04fb 11       		.uleb128 0x11
+ 1851 04fc 01       		.uleb128 0x1
+ 1852 04fd 50       		.byte	0x50
+ 1853 04fe 02       		.uleb128 0x2
+ 1854 04ff 08       		.byte	0x8
+ 1855 0500 64       		.byte	0x64
+ 1856 0501 00       		.byte	0
+ 1857 0502 12       		.uleb128 0x12
+ 1858 0503 C4010000 		.4byte	.LVL65
+ 1859 0507 97060000 		.4byte	0x697
+ 1860 050b 10       		.uleb128 0x10
+ 1861 050c CA010000 		.4byte	.LVL66
+ 1862 0510 4A060000 		.4byte	0x64a
+ 1863 0514 1F050000 		.4byte	0x51f
+ 1864 0518 11       		.uleb128 0x11
+ 1865 0519 01       		.uleb128 0x1
+ 1866 051a 50       		.byte	0x50
+ 1867 051b 02       		.uleb128 0x2
+ 1868 051c 08       		.byte	0x8
+ 1869 051d 64       		.byte	0x64
+ 1870 051e 00       		.byte	0
+ 1871 051f 12       		.uleb128 0x12
+ 1872 0520 CE010000 		.4byte	.LVL67
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 40
+
+
+ 1873 0524 A3060000 		.4byte	0x6a3
+ 1874 0528 13       		.uleb128 0x13
+ 1875 0529 D4010000 		.4byte	.LVL68
+ 1876 052d 4A060000 		.4byte	0x64a
+ 1877 0531 11       		.uleb128 0x11
+ 1878 0532 01       		.uleb128 0x1
+ 1879 0533 50       		.byte	0x50
+ 1880 0534 02       		.uleb128 0x2
+ 1881 0535 08       		.byte	0x8
+ 1882 0536 64       		.byte	0x64
+ 1883 0537 00       		.byte	0
+ 1884 0538 00       		.byte	0
+ 1885 0539 12       		.uleb128 0x12
+ 1886 053a 0A000000 		.4byte	.LVL22
+ 1887 053e AF060000 		.4byte	0x6af
+ 1888 0542 12       		.uleb128 0x12
+ 1889 0543 0E000000 		.4byte	.LVL23
+ 1890 0547 BA060000 		.4byte	0x6ba
+ 1891 054b 12       		.uleb128 0x12
+ 1892 054c 12000000 		.4byte	.LVL24
+ 1893 0550 C5060000 		.4byte	0x6c5
+ 1894 0554 12       		.uleb128 0x12
+ 1895 0555 16000000 		.4byte	.LVL25
+ 1896 0559 D0060000 		.4byte	0x6d0
+ 1897 055d 12       		.uleb128 0x12
+ 1898 055e 1A000000 		.4byte	.LVL26
+ 1899 0562 DB060000 		.4byte	0x6db
+ 1900 0566 12       		.uleb128 0x12
+ 1901 0567 1E000000 		.4byte	.LVL27
+ 1902 056b E6060000 		.4byte	0x6e6
+ 1903 056f 13       		.uleb128 0x13
+ 1904 0570 24000000 		.4byte	.LVL28
+ 1905 0574 3F060000 		.4byte	0x63f
+ 1906 0578 11       		.uleb128 0x11
+ 1907 0579 01       		.uleb128 0x1
+ 1908 057a 50       		.byte	0x50
+ 1909 057b 05       		.uleb128 0x5
+ 1910 057c 03       		.byte	0x3
+ 1911 057d 00000000 		.4byte	.LC0
+ 1912 0581 00       		.byte	0
+ 1913 0582 00       		.byte	0
+ 1914 0583 14       		.uleb128 0x14
+ 1915 0584 A7000000 		.4byte	0xa7
+ 1916 0588 93050000 		.4byte	0x593
+ 1917 058c 15       		.uleb128 0x15
+ 1918 058d B5000000 		.4byte	0xb5
+ 1919 0591 1F       		.byte	0x1f
+ 1920 0592 00       		.byte	0
+ 1921 0593 14       		.uleb128 0x14
+ 1922 0594 8D000000 		.4byte	0x8d
+ 1923 0598 A3050000 		.4byte	0x5a3
+ 1924 059c 15       		.uleb128 0x15
+ 1925 059d B5000000 		.4byte	0xb5
+ 1926 05a1 07       		.byte	0x7
+ 1927 05a2 00       		.byte	0
+ 1928 05a3 16       		.uleb128 0x16
+ 1929 05a4 3E010000 		.4byte	.LASF21
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 41
+
+
+ 1930 05a8 01       		.byte	0x1
+ 1931 05a9 AE       		.byte	0xae
+ 1932 05aa 81000000 		.4byte	0x81
+ 1933 05ae 00000000 		.4byte	.LFB68
+ 1934 05b2 2A030000 		.4byte	.LFE68-.LFB68
+ 1935 05b6 01       		.uleb128 0x1
+ 1936 05b7 9C       		.byte	0x9c
+ 1937 05b8 DB050000 		.4byte	0x5db
+ 1938 05bc 17       		.uleb128 0x17
+ 1939 05bd FD010000 		.4byte	.LASF22
+ 1940 05c1 01       		.byte	0x1
+ 1941 05c2 AE       		.byte	0xae
+ 1942 05c3 8D000000 		.4byte	0x8d
+ 1943 05c7 67010000 		.4byte	.LLST11
+ 1944 05cb 0C       		.uleb128 0xc
+ 1945 05cc 18010000 		.4byte	.LASF23
+ 1946 05d0 01       		.byte	0x1
+ 1947 05d1 AF       		.byte	0xaf
+ 1948 05d2 81000000 		.4byte	0x81
+ 1949 05d6 96070000 		.4byte	.LLST12
+ 1950 05da 00       		.byte	0
+ 1951 05db 18       		.uleb128 0x18
+ 1952 05dc 31010000 		.4byte	.LASF24
+ 1953 05e0 05       		.byte	0x5
+ 1954 05e1 1207     		.2byte	0x712
+ 1955 05e3 E7050000 		.4byte	0x5e7
+ 1956 05e7 19       		.uleb128 0x19
+ 1957 05e8 76000000 		.4byte	0x76
+ 1958 05ec 14       		.uleb128 0x14
+ 1959 05ed 8D000000 		.4byte	0x8d
+ 1960 05f1 FC050000 		.4byte	0x5fc
+ 1961 05f5 15       		.uleb128 0x15
+ 1962 05f6 B5000000 		.4byte	0xb5
+ 1963 05fa 02       		.byte	0x2
+ 1964 05fb 00       		.byte	0
+ 1965 05fc 1A       		.uleb128 0x1a
+ 1966 05fd 5B010000 		.4byte	.LASF25
+ 1967 0601 01       		.byte	0x1
+ 1968 0602 17       		.byte	0x17
+ 1969 0603 EC050000 		.4byte	0x5ec
+ 1970 0607 05       		.uleb128 0x5
+ 1971 0608 03       		.byte	0x3
+ 1972 0609 00000000 		.4byte	RX_DATA_P1
+ 1973 060d 1A       		.uleb128 0x1a
+ 1974 060e 29010000 		.4byte	.LASF26
+ 1975 0612 01       		.byte	0x1
+ 1976 0613 18       		.byte	0x18
+ 1977 0614 EC050000 		.4byte	0x5ec
+ 1978 0618 05       		.uleb128 0x5
+ 1979 0619 03       		.byte	0x3
+ 1980 061a 00000000 		.4byte	TX_DATA
+ 1981 061e 14       		.uleb128 0x14
+ 1982 061f 81000000 		.4byte	0x81
+ 1983 0623 2E060000 		.4byte	0x62e
+ 1984 0627 15       		.uleb128 0x15
+ 1985 0628 B5000000 		.4byte	0xb5
+ 1986 062c 02       		.byte	0x2
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 42
+
+
+ 1987 062d 00       		.byte	0
+ 1988 062e 1A       		.uleb128 0x1a
+ 1989 062f 4F020000 		.4byte	.LASF27
+ 1990 0633 01       		.byte	0x1
+ 1991 0634 19       		.byte	0x19
+ 1992 0635 1E060000 		.4byte	0x61e
+ 1993 0639 05       		.uleb128 0x5
+ 1994 063a 03       		.byte	0x3
+ 1995 063b 00000000 		.4byte	TX_DATA8
+ 1996 063f 1B       		.uleb128 0x1b
+ 1997 0640 00030000 		.4byte	.LASF28
+ 1998 0644 00030000 		.4byte	.LASF28
+ 1999 0648 06       		.byte	0x6
+ 2000 0649 8B       		.byte	0x8b
+ 2001 064a 1B       		.uleb128 0x1b
+ 2002 064b 19030000 		.4byte	.LASF29
+ 2003 064f 19030000 		.4byte	.LASF29
+ 2004 0653 07       		.byte	0x7
+ 2005 0654 76       		.byte	0x76
+ 2006 0655 1B       		.uleb128 0x1b
+ 2007 0656 06010000 		.4byte	.LASF30
+ 2008 065a 06010000 		.4byte	.LASF30
+ 2009 065e 08       		.byte	0x8
+ 2010 065f 27       		.byte	0x27
+ 2011 0660 1B       		.uleb128 0x1b
+ 2012 0661 9C020000 		.4byte	.LASF31
+ 2013 0665 9C020000 		.4byte	.LASF31
+ 2014 0669 09       		.byte	0x9
+ 2015 066a 3F       		.byte	0x3f
+ 2016 066b 1B       		.uleb128 0x1b
+ 2017 066c 90010000 		.4byte	.LASF32
+ 2018 0670 90010000 		.4byte	.LASF32
+ 2019 0674 09       		.byte	0x9
+ 2020 0675 41       		.byte	0x41
+ 2021 0676 1B       		.uleb128 0x1b
+ 2022 0677 C9010000 		.4byte	.LASF33
+ 2023 067b C9010000 		.4byte	.LASF33
+ 2024 067f 09       		.byte	0x9
+ 2025 0680 47       		.byte	0x47
+ 2026 0681 1B       		.uleb128 0x1b
+ 2027 0682 11030000 		.4byte	.LASF34
+ 2028 0686 11030000 		.4byte	.LASF34
+ 2029 068a 0A       		.byte	0xa
+ 2030 068b E7       		.byte	0xe7
+ 2031 068c 1B       		.uleb128 0x1b
+ 2032 068d 1A020000 		.4byte	.LASF35
+ 2033 0691 1A020000 		.4byte	.LASF35
+ 2034 0695 0B       		.byte	0xb
+ 2035 0696 C3       		.byte	0xc3
+ 2036 0697 1C       		.uleb128 0x1c
+ 2037 0698 66010000 		.4byte	.LASF36
+ 2038 069c 66010000 		.4byte	.LASF36
+ 2039 06a0 0C       		.byte	0xc
+ 2040 06a1 1D01     		.2byte	0x11d
+ 2041 06a3 1C       		.uleb128 0x1c
+ 2042 06a4 75010000 		.4byte	.LASF37
+ 2043 06a8 75010000 		.4byte	.LASF37
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 43
+
+
+ 2044 06ac 0C       		.byte	0xc
+ 2045 06ad 2001     		.2byte	0x120
+ 2046 06af 1B       		.uleb128 0x1b
+ 2047 06b0 1D010000 		.4byte	.LASF38
+ 2048 06b4 1D010000 		.4byte	.LASF38
+ 2049 06b8 0B       		.byte	0xb
+ 2050 06b9 92       		.byte	0x92
+ 2051 06ba 1B       		.uleb128 0x1b
+ 2052 06bb 16000000 		.4byte	.LASF39
+ 2053 06bf 16000000 		.4byte	.LASF39
+ 2054 06c3 06       		.byte	0x6
+ 2055 06c4 54       		.byte	0x54
+ 2056 06c5 1B       		.uleb128 0x1b
+ 2057 06c6 A9010000 		.4byte	.LASF40
+ 2058 06ca A9010000 		.4byte	.LASF40
+ 2059 06ce 09       		.byte	0x9
+ 2060 06cf 3A       		.byte	0x3a
+ 2061 06d0 1B       		.uleb128 0x1b
+ 2062 06d1 2D020000 		.4byte	.LASF41
+ 2063 06d5 2D020000 		.4byte	.LASF41
+ 2064 06d9 08       		.byte	0x8
+ 2065 06da 25       		.byte	0x25
+ 2066 06db 1B       		.uleb128 0x1b
+ 2067 06dc E8020000 		.4byte	.LASF42
+ 2068 06e0 E8020000 		.4byte	.LASF42
+ 2069 06e4 0C       		.byte	0xc
+ 2070 06e5 C5       		.byte	0xc5
+ 2071 06e6 1B       		.uleb128 0x1b
+ 2072 06e7 C2020000 		.4byte	.LASF43
+ 2073 06eb C2020000 		.4byte	.LASF43
+ 2074 06ef 09       		.byte	0x9
+ 2075 06f0 3D       		.byte	0x3d
+ 2076 06f1 00       		.byte	0
+ 2077              		.section	.debug_abbrev,"",%progbits
+ 2078              	.Ldebug_abbrev0:
+ 2079 0000 01       		.uleb128 0x1
+ 2080 0001 11       		.uleb128 0x11
+ 2081 0002 01       		.byte	0x1
+ 2082 0003 25       		.uleb128 0x25
+ 2083 0004 0E       		.uleb128 0xe
+ 2084 0005 13       		.uleb128 0x13
+ 2085 0006 0B       		.uleb128 0xb
+ 2086 0007 03       		.uleb128 0x3
+ 2087 0008 0E       		.uleb128 0xe
+ 2088 0009 1B       		.uleb128 0x1b
+ 2089 000a 0E       		.uleb128 0xe
+ 2090 000b 55       		.uleb128 0x55
+ 2091 000c 17       		.uleb128 0x17
+ 2092 000d 11       		.uleb128 0x11
+ 2093 000e 01       		.uleb128 0x1
+ 2094 000f 10       		.uleb128 0x10
+ 2095 0010 17       		.uleb128 0x17
+ 2096 0011 00       		.byte	0
+ 2097 0012 00       		.byte	0
+ 2098 0013 02       		.uleb128 0x2
+ 2099 0014 24       		.uleb128 0x24
+ 2100 0015 00       		.byte	0
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 44
+
+
+ 2101 0016 0B       		.uleb128 0xb
+ 2102 0017 0B       		.uleb128 0xb
+ 2103 0018 3E       		.uleb128 0x3e
+ 2104 0019 0B       		.uleb128 0xb
+ 2105 001a 03       		.uleb128 0x3
+ 2106 001b 0E       		.uleb128 0xe
+ 2107 001c 00       		.byte	0
+ 2108 001d 00       		.byte	0
+ 2109 001e 03       		.uleb128 0x3
+ 2110 001f 16       		.uleb128 0x16
+ 2111 0020 00       		.byte	0
+ 2112 0021 03       		.uleb128 0x3
+ 2113 0022 0E       		.uleb128 0xe
+ 2114 0023 3A       		.uleb128 0x3a
+ 2115 0024 0B       		.uleb128 0xb
+ 2116 0025 3B       		.uleb128 0x3b
+ 2117 0026 0B       		.uleb128 0xb
+ 2118 0027 49       		.uleb128 0x49
+ 2119 0028 13       		.uleb128 0x13
+ 2120 0029 00       		.byte	0
+ 2121 002a 00       		.byte	0
+ 2122 002b 04       		.uleb128 0x4
+ 2123 002c 24       		.uleb128 0x24
+ 2124 002d 00       		.byte	0
+ 2125 002e 0B       		.uleb128 0xb
+ 2126 002f 0B       		.uleb128 0xb
+ 2127 0030 3E       		.uleb128 0x3e
+ 2128 0031 0B       		.uleb128 0xb
+ 2129 0032 03       		.uleb128 0x3
+ 2130 0033 08       		.uleb128 0x8
+ 2131 0034 00       		.byte	0
+ 2132 0035 00       		.byte	0
+ 2133 0036 05       		.uleb128 0x5
+ 2134 0037 16       		.uleb128 0x16
+ 2135 0038 00       		.byte	0
+ 2136 0039 03       		.uleb128 0x3
+ 2137 003a 0E       		.uleb128 0xe
+ 2138 003b 3A       		.uleb128 0x3a
+ 2139 003c 0B       		.uleb128 0xb
+ 2140 003d 3B       		.uleb128 0x3b
+ 2141 003e 05       		.uleb128 0x5
+ 2142 003f 49       		.uleb128 0x49
+ 2143 0040 13       		.uleb128 0x13
+ 2144 0041 00       		.byte	0
+ 2145 0042 00       		.byte	0
+ 2146 0043 06       		.uleb128 0x6
+ 2147 0044 2E       		.uleb128 0x2e
+ 2148 0045 01       		.byte	0x1
+ 2149 0046 3F       		.uleb128 0x3f
+ 2150 0047 19       		.uleb128 0x19
+ 2151 0048 03       		.uleb128 0x3
+ 2152 0049 08       		.uleb128 0x8
+ 2153 004a 3A       		.uleb128 0x3a
+ 2154 004b 0B       		.uleb128 0xb
+ 2155 004c 3B       		.uleb128 0x3b
+ 2156 004d 0B       		.uleb128 0xb
+ 2157 004e 27       		.uleb128 0x27
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 45
+
+
+ 2158 004f 19       		.uleb128 0x19
+ 2159 0050 49       		.uleb128 0x49
+ 2160 0051 13       		.uleb128 0x13
+ 2161 0052 11       		.uleb128 0x11
+ 2162 0053 01       		.uleb128 0x1
+ 2163 0054 12       		.uleb128 0x12
+ 2164 0055 06       		.uleb128 0x6
+ 2165 0056 40       		.uleb128 0x40
+ 2166 0057 18       		.uleb128 0x18
+ 2167 0058 9742     		.uleb128 0x2117
+ 2168 005a 19       		.uleb128 0x19
+ 2169 005b 01       		.uleb128 0x1
+ 2170 005c 13       		.uleb128 0x13
+ 2171 005d 00       		.byte	0
+ 2172 005e 00       		.byte	0
+ 2173 005f 07       		.uleb128 0x7
+ 2174 0060 05       		.uleb128 0x5
+ 2175 0061 00       		.byte	0
+ 2176 0062 03       		.uleb128 0x3
+ 2177 0063 08       		.uleb128 0x8
+ 2178 0064 3A       		.uleb128 0x3a
+ 2179 0065 0B       		.uleb128 0xb
+ 2180 0066 3B       		.uleb128 0x3b
+ 2181 0067 0B       		.uleb128 0xb
+ 2182 0068 49       		.uleb128 0x49
+ 2183 0069 13       		.uleb128 0x13
+ 2184 006a 02       		.uleb128 0x2
+ 2185 006b 17       		.uleb128 0x17
+ 2186 006c 00       		.byte	0
+ 2187 006d 00       		.byte	0
+ 2188 006e 08       		.uleb128 0x8
+ 2189 006f 05       		.uleb128 0x5
+ 2190 0070 00       		.byte	0
+ 2191 0071 03       		.uleb128 0x3
+ 2192 0072 08       		.uleb128 0x8
+ 2193 0073 3A       		.uleb128 0x3a
+ 2194 0074 0B       		.uleb128 0xb
+ 2195 0075 3B       		.uleb128 0x3b
+ 2196 0076 0B       		.uleb128 0xb
+ 2197 0077 49       		.uleb128 0x49
+ 2198 0078 13       		.uleb128 0x13
+ 2199 0079 02       		.uleb128 0x2
+ 2200 007a 18       		.uleb128 0x18
+ 2201 007b 00       		.byte	0
+ 2202 007c 00       		.byte	0
+ 2203 007d 09       		.uleb128 0x9
+ 2204 007e 34       		.uleb128 0x34
+ 2205 007f 00       		.byte	0
+ 2206 0080 03       		.uleb128 0x3
+ 2207 0081 08       		.uleb128 0x8
+ 2208 0082 3A       		.uleb128 0x3a
+ 2209 0083 0B       		.uleb128 0xb
+ 2210 0084 3B       		.uleb128 0x3b
+ 2211 0085 0B       		.uleb128 0xb
+ 2212 0086 49       		.uleb128 0x49
+ 2213 0087 13       		.uleb128 0x13
+ 2214 0088 02       		.uleb128 0x2
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 46
+
+
+ 2215 0089 17       		.uleb128 0x17
+ 2216 008a 00       		.byte	0
+ 2217 008b 00       		.byte	0
+ 2218 008c 0A       		.uleb128 0xa
+ 2219 008d 0F       		.uleb128 0xf
+ 2220 008e 00       		.byte	0
+ 2221 008f 0B       		.uleb128 0xb
+ 2222 0090 0B       		.uleb128 0xb
+ 2223 0091 49       		.uleb128 0x49
+ 2224 0092 13       		.uleb128 0x13
+ 2225 0093 00       		.byte	0
+ 2226 0094 00       		.byte	0
+ 2227 0095 0B       		.uleb128 0xb
+ 2228 0096 34       		.uleb128 0x34
+ 2229 0097 00       		.byte	0
+ 2230 0098 03       		.uleb128 0x3
+ 2231 0099 08       		.uleb128 0x8
+ 2232 009a 3A       		.uleb128 0x3a
+ 2233 009b 0B       		.uleb128 0xb
+ 2234 009c 3B       		.uleb128 0x3b
+ 2235 009d 0B       		.uleb128 0xb
+ 2236 009e 49       		.uleb128 0x49
+ 2237 009f 13       		.uleb128 0x13
+ 2238 00a0 02       		.uleb128 0x2
+ 2239 00a1 18       		.uleb128 0x18
+ 2240 00a2 00       		.byte	0
+ 2241 00a3 00       		.byte	0
+ 2242 00a4 0C       		.uleb128 0xc
+ 2243 00a5 34       		.uleb128 0x34
+ 2244 00a6 00       		.byte	0
+ 2245 00a7 03       		.uleb128 0x3
+ 2246 00a8 0E       		.uleb128 0xe
+ 2247 00a9 3A       		.uleb128 0x3a
+ 2248 00aa 0B       		.uleb128 0xb
+ 2249 00ab 3B       		.uleb128 0x3b
+ 2250 00ac 0B       		.uleb128 0xb
+ 2251 00ad 49       		.uleb128 0x49
+ 2252 00ae 13       		.uleb128 0x13
+ 2253 00af 02       		.uleb128 0x2
+ 2254 00b0 17       		.uleb128 0x17
+ 2255 00b1 00       		.byte	0
+ 2256 00b2 00       		.byte	0
+ 2257 00b3 0D       		.uleb128 0xd
+ 2258 00b4 2E       		.uleb128 0x2e
+ 2259 00b5 01       		.byte	0x1
+ 2260 00b6 3F       		.uleb128 0x3f
+ 2261 00b7 19       		.uleb128 0x19
+ 2262 00b8 03       		.uleb128 0x3
+ 2263 00b9 0E       		.uleb128 0xe
+ 2264 00ba 3A       		.uleb128 0x3a
+ 2265 00bb 0B       		.uleb128 0xb
+ 2266 00bc 3B       		.uleb128 0x3b
+ 2267 00bd 0B       		.uleb128 0xb
+ 2268 00be 27       		.uleb128 0x27
+ 2269 00bf 19       		.uleb128 0x19
+ 2270 00c0 49       		.uleb128 0x49
+ 2271 00c1 13       		.uleb128 0x13
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 47
+
+
+ 2272 00c2 8701     		.uleb128 0x87
+ 2273 00c4 19       		.uleb128 0x19
+ 2274 00c5 11       		.uleb128 0x11
+ 2275 00c6 01       		.uleb128 0x1
+ 2276 00c7 12       		.uleb128 0x12
+ 2277 00c8 06       		.uleb128 0x6
+ 2278 00c9 40       		.uleb128 0x40
+ 2279 00ca 18       		.uleb128 0x18
+ 2280 00cb 9742     		.uleb128 0x2117
+ 2281 00cd 19       		.uleb128 0x19
+ 2282 00ce 01       		.uleb128 0x1
+ 2283 00cf 13       		.uleb128 0x13
+ 2284 00d0 00       		.byte	0
+ 2285 00d1 00       		.byte	0
+ 2286 00d2 0E       		.uleb128 0xe
+ 2287 00d3 34       		.uleb128 0x34
+ 2288 00d4 00       		.byte	0
+ 2289 00d5 03       		.uleb128 0x3
+ 2290 00d6 0E       		.uleb128 0xe
+ 2291 00d7 3A       		.uleb128 0x3a
+ 2292 00d8 0B       		.uleb128 0xb
+ 2293 00d9 3B       		.uleb128 0x3b
+ 2294 00da 0B       		.uleb128 0xb
+ 2295 00db 49       		.uleb128 0x49
+ 2296 00dc 13       		.uleb128 0x13
+ 2297 00dd 02       		.uleb128 0x2
+ 2298 00de 18       		.uleb128 0x18
+ 2299 00df 00       		.byte	0
+ 2300 00e0 00       		.byte	0
+ 2301 00e1 0F       		.uleb128 0xf
+ 2302 00e2 0B       		.uleb128 0xb
+ 2303 00e3 01       		.byte	0x1
+ 2304 00e4 11       		.uleb128 0x11
+ 2305 00e5 01       		.uleb128 0x1
+ 2306 00e6 12       		.uleb128 0x12
+ 2307 00e7 06       		.uleb128 0x6
+ 2308 00e8 01       		.uleb128 0x1
+ 2309 00e9 13       		.uleb128 0x13
+ 2310 00ea 00       		.byte	0
+ 2311 00eb 00       		.byte	0
+ 2312 00ec 10       		.uleb128 0x10
+ 2313 00ed 898201   		.uleb128 0x4109
+ 2314 00f0 01       		.byte	0x1
+ 2315 00f1 11       		.uleb128 0x11
+ 2316 00f2 01       		.uleb128 0x1
+ 2317 00f3 31       		.uleb128 0x31
+ 2318 00f4 13       		.uleb128 0x13
+ 2319 00f5 01       		.uleb128 0x1
+ 2320 00f6 13       		.uleb128 0x13
+ 2321 00f7 00       		.byte	0
+ 2322 00f8 00       		.byte	0
+ 2323 00f9 11       		.uleb128 0x11
+ 2324 00fa 8A8201   		.uleb128 0x410a
+ 2325 00fd 00       		.byte	0
+ 2326 00fe 02       		.uleb128 0x2
+ 2327 00ff 18       		.uleb128 0x18
+ 2328 0100 9142     		.uleb128 0x2111
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 48
+
+
+ 2329 0102 18       		.uleb128 0x18
+ 2330 0103 00       		.byte	0
+ 2331 0104 00       		.byte	0
+ 2332 0105 12       		.uleb128 0x12
+ 2333 0106 898201   		.uleb128 0x4109
+ 2334 0109 00       		.byte	0
+ 2335 010a 11       		.uleb128 0x11
+ 2336 010b 01       		.uleb128 0x1
+ 2337 010c 31       		.uleb128 0x31
+ 2338 010d 13       		.uleb128 0x13
+ 2339 010e 00       		.byte	0
+ 2340 010f 00       		.byte	0
+ 2341 0110 13       		.uleb128 0x13
+ 2342 0111 898201   		.uleb128 0x4109
+ 2343 0114 01       		.byte	0x1
+ 2344 0115 11       		.uleb128 0x11
+ 2345 0116 01       		.uleb128 0x1
+ 2346 0117 31       		.uleb128 0x31
+ 2347 0118 13       		.uleb128 0x13
+ 2348 0119 00       		.byte	0
+ 2349 011a 00       		.byte	0
+ 2350 011b 14       		.uleb128 0x14
+ 2351 011c 01       		.uleb128 0x1
+ 2352 011d 01       		.byte	0x1
+ 2353 011e 49       		.uleb128 0x49
+ 2354 011f 13       		.uleb128 0x13
+ 2355 0120 01       		.uleb128 0x1
+ 2356 0121 13       		.uleb128 0x13
+ 2357 0122 00       		.byte	0
+ 2358 0123 00       		.byte	0
+ 2359 0124 15       		.uleb128 0x15
+ 2360 0125 21       		.uleb128 0x21
+ 2361 0126 00       		.byte	0
+ 2362 0127 49       		.uleb128 0x49
+ 2363 0128 13       		.uleb128 0x13
+ 2364 0129 2F       		.uleb128 0x2f
+ 2365 012a 0B       		.uleb128 0xb
+ 2366 012b 00       		.byte	0
+ 2367 012c 00       		.byte	0
+ 2368 012d 16       		.uleb128 0x16
+ 2369 012e 2E       		.uleb128 0x2e
+ 2370 012f 01       		.byte	0x1
+ 2371 0130 3F       		.uleb128 0x3f
+ 2372 0131 19       		.uleb128 0x19
+ 2373 0132 03       		.uleb128 0x3
+ 2374 0133 0E       		.uleb128 0xe
+ 2375 0134 3A       		.uleb128 0x3a
+ 2376 0135 0B       		.uleb128 0xb
+ 2377 0136 3B       		.uleb128 0x3b
+ 2378 0137 0B       		.uleb128 0xb
+ 2379 0138 27       		.uleb128 0x27
+ 2380 0139 19       		.uleb128 0x19
+ 2381 013a 49       		.uleb128 0x49
+ 2382 013b 13       		.uleb128 0x13
+ 2383 013c 11       		.uleb128 0x11
+ 2384 013d 01       		.uleb128 0x1
+ 2385 013e 12       		.uleb128 0x12
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 49
+
+
+ 2386 013f 06       		.uleb128 0x6
+ 2387 0140 40       		.uleb128 0x40
+ 2388 0141 18       		.uleb128 0x18
+ 2389 0142 9742     		.uleb128 0x2117
+ 2390 0144 19       		.uleb128 0x19
+ 2391 0145 01       		.uleb128 0x1
+ 2392 0146 13       		.uleb128 0x13
+ 2393 0147 00       		.byte	0
+ 2394 0148 00       		.byte	0
+ 2395 0149 17       		.uleb128 0x17
+ 2396 014a 05       		.uleb128 0x5
+ 2397 014b 00       		.byte	0
+ 2398 014c 03       		.uleb128 0x3
+ 2399 014d 0E       		.uleb128 0xe
+ 2400 014e 3A       		.uleb128 0x3a
+ 2401 014f 0B       		.uleb128 0xb
+ 2402 0150 3B       		.uleb128 0x3b
+ 2403 0151 0B       		.uleb128 0xb
+ 2404 0152 49       		.uleb128 0x49
+ 2405 0153 13       		.uleb128 0x13
+ 2406 0154 02       		.uleb128 0x2
+ 2407 0155 17       		.uleb128 0x17
+ 2408 0156 00       		.byte	0
+ 2409 0157 00       		.byte	0
+ 2410 0158 18       		.uleb128 0x18
+ 2411 0159 34       		.uleb128 0x34
+ 2412 015a 00       		.byte	0
+ 2413 015b 03       		.uleb128 0x3
+ 2414 015c 0E       		.uleb128 0xe
+ 2415 015d 3A       		.uleb128 0x3a
+ 2416 015e 0B       		.uleb128 0xb
+ 2417 015f 3B       		.uleb128 0x3b
+ 2418 0160 05       		.uleb128 0x5
+ 2419 0161 49       		.uleb128 0x49
+ 2420 0162 13       		.uleb128 0x13
+ 2421 0163 3F       		.uleb128 0x3f
+ 2422 0164 19       		.uleb128 0x19
+ 2423 0165 3C       		.uleb128 0x3c
+ 2424 0166 19       		.uleb128 0x19
+ 2425 0167 00       		.byte	0
+ 2426 0168 00       		.byte	0
+ 2427 0169 19       		.uleb128 0x19
+ 2428 016a 35       		.uleb128 0x35
+ 2429 016b 00       		.byte	0
+ 2430 016c 49       		.uleb128 0x49
+ 2431 016d 13       		.uleb128 0x13
+ 2432 016e 00       		.byte	0
+ 2433 016f 00       		.byte	0
+ 2434 0170 1A       		.uleb128 0x1a
+ 2435 0171 34       		.uleb128 0x34
+ 2436 0172 00       		.byte	0
+ 2437 0173 03       		.uleb128 0x3
+ 2438 0174 0E       		.uleb128 0xe
+ 2439 0175 3A       		.uleb128 0x3a
+ 2440 0176 0B       		.uleb128 0xb
+ 2441 0177 3B       		.uleb128 0x3b
+ 2442 0178 0B       		.uleb128 0xb
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 50
+
+
+ 2443 0179 49       		.uleb128 0x49
+ 2444 017a 13       		.uleb128 0x13
+ 2445 017b 3F       		.uleb128 0x3f
+ 2446 017c 19       		.uleb128 0x19
+ 2447 017d 02       		.uleb128 0x2
+ 2448 017e 18       		.uleb128 0x18
+ 2449 017f 00       		.byte	0
+ 2450 0180 00       		.byte	0
+ 2451 0181 1B       		.uleb128 0x1b
+ 2452 0182 2E       		.uleb128 0x2e
+ 2453 0183 00       		.byte	0
+ 2454 0184 3F       		.uleb128 0x3f
+ 2455 0185 19       		.uleb128 0x19
+ 2456 0186 3C       		.uleb128 0x3c
+ 2457 0187 19       		.uleb128 0x19
+ 2458 0188 6E       		.uleb128 0x6e
+ 2459 0189 0E       		.uleb128 0xe
+ 2460 018a 03       		.uleb128 0x3
+ 2461 018b 0E       		.uleb128 0xe
+ 2462 018c 3A       		.uleb128 0x3a
+ 2463 018d 0B       		.uleb128 0xb
+ 2464 018e 3B       		.uleb128 0x3b
+ 2465 018f 0B       		.uleb128 0xb
+ 2466 0190 00       		.byte	0
+ 2467 0191 00       		.byte	0
+ 2468 0192 1C       		.uleb128 0x1c
+ 2469 0193 2E       		.uleb128 0x2e
+ 2470 0194 00       		.byte	0
+ 2471 0195 3F       		.uleb128 0x3f
+ 2472 0196 19       		.uleb128 0x19
+ 2473 0197 3C       		.uleb128 0x3c
+ 2474 0198 19       		.uleb128 0x19
+ 2475 0199 6E       		.uleb128 0x6e
+ 2476 019a 0E       		.uleb128 0xe
+ 2477 019b 03       		.uleb128 0x3
+ 2478 019c 0E       		.uleb128 0xe
+ 2479 019d 3A       		.uleb128 0x3a
+ 2480 019e 0B       		.uleb128 0xb
+ 2481 019f 3B       		.uleb128 0x3b
+ 2482 01a0 05       		.uleb128 0x5
+ 2483 01a1 00       		.byte	0
+ 2484 01a2 00       		.byte	0
+ 2485 01a3 00       		.byte	0
+ 2486              		.section	.debug_loc,"",%progbits
+ 2487              	.Ldebug_loc0:
+ 2488              	.LLST0:
+ 2489 0000 00000000 		.4byte	.LVL0
+ 2490 0004 06000000 		.4byte	.LVL2
+ 2491 0008 0100     		.2byte	0x1
+ 2492 000a 50       		.byte	0x50
+ 2493 000b 06000000 		.4byte	.LVL2
+ 2494 000f 1C000000 		.4byte	.LVL6
+ 2495 0013 0100     		.2byte	0x1
+ 2496 0015 54       		.byte	0x54
+ 2497 0016 1C000000 		.4byte	.LVL6
+ 2498 001a 1E000000 		.4byte	.LFE64
+ 2499 001e 0400     		.2byte	0x4
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 51
+
+
+ 2500 0020 F3       		.byte	0xf3
+ 2501 0021 01       		.uleb128 0x1
+ 2502 0022 50       		.byte	0x50
+ 2503 0023 9F       		.byte	0x9f
+ 2504 0024 00000000 		.4byte	0
+ 2505 0028 00000000 		.4byte	0
+ 2506              	.LLST1:
+ 2507 002c 04000000 		.4byte	.LVL1
+ 2508 0030 0A000000 		.4byte	.LVL3
+ 2509 0034 0200     		.2byte	0x2
+ 2510 0036 30       		.byte	0x30
+ 2511 0037 9F       		.byte	0x9f
+ 2512 0038 0A000000 		.4byte	.LVL3
+ 2513 003c 1E000000 		.4byte	.LFE64
+ 2514 0040 0100     		.2byte	0x1
+ 2515 0042 53       		.byte	0x53
+ 2516 0043 00000000 		.4byte	0
+ 2517 0047 00000000 		.4byte	0
+ 2518              	.LLST2:
+ 2519 004b 04000000 		.4byte	.LVL1
+ 2520 004f 0A000000 		.4byte	.LVL3
+ 2521 0053 0200     		.2byte	0x2
+ 2522 0055 30       		.byte	0x30
+ 2523 0056 9F       		.byte	0x9f
+ 2524 0057 0A000000 		.4byte	.LVL3
+ 2525 005b 1E000000 		.4byte	.LFE64
+ 2526 005f 0100     		.2byte	0x1
+ 2527 0061 50       		.byte	0x50
+ 2528 0062 00000000 		.4byte	0
+ 2529 0066 00000000 		.4byte	0
+ 2530              	.LLST3:
+ 2531 006a 00000000 		.4byte	.LVL7
+ 2532 006e 1A000000 		.4byte	.LVL12
+ 2533 0072 0100     		.2byte	0x1
+ 2534 0074 50       		.byte	0x50
+ 2535 0075 1A000000 		.4byte	.LVL12
+ 2536 0079 1E000000 		.4byte	.LFE65
+ 2537 007d 0400     		.2byte	0x4
+ 2538 007f F3       		.byte	0xf3
+ 2539 0080 01       		.uleb128 0x1
+ 2540 0081 50       		.byte	0x50
+ 2541 0082 9F       		.byte	0x9f
+ 2542 0083 00000000 		.4byte	0
+ 2543 0087 00000000 		.4byte	0
+ 2544              	.LLST4:
+ 2545 008b 00000000 		.4byte	.LVL7
+ 2546 008f 06000000 		.4byte	.LVL9
+ 2547 0093 0100     		.2byte	0x1
+ 2548 0095 52       		.byte	0x52
+ 2549 0096 06000000 		.4byte	.LVL9
+ 2550 009a 1E000000 		.4byte	.LFE65
+ 2551 009e 0400     		.2byte	0x4
+ 2552 00a0 F3       		.byte	0xf3
+ 2553 00a1 01       		.uleb128 0x1
+ 2554 00a2 52       		.byte	0x52
+ 2555 00a3 9F       		.byte	0x9f
+ 2556 00a4 00000000 		.4byte	0
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 52
+
+
+ 2557 00a8 00000000 		.4byte	0
+ 2558              	.LLST5:
+ 2559 00ac 02000000 		.4byte	.LVL8
+ 2560 00b0 06000000 		.4byte	.LVL9
+ 2561 00b4 0200     		.2byte	0x2
+ 2562 00b6 30       		.byte	0x30
+ 2563 00b7 9F       		.byte	0x9f
+ 2564 00b8 06000000 		.4byte	.LVL9
+ 2565 00bc 1E000000 		.4byte	.LFE65
+ 2566 00c0 0100     		.2byte	0x1
+ 2567 00c2 53       		.byte	0x53
+ 2568 00c3 00000000 		.4byte	0
+ 2569 00c7 00000000 		.4byte	0
+ 2570              	.LLST6:
+ 2571 00cb 00000000 		.4byte	.LVL13
+ 2572 00cf 20000000 		.4byte	.LVL20
+ 2573 00d3 0100     		.2byte	0x1
+ 2574 00d5 50       		.byte	0x50
+ 2575 00d6 20000000 		.4byte	.LVL20
+ 2576 00da 26000000 		.4byte	.LFE66
+ 2577 00de 0400     		.2byte	0x4
+ 2578 00e0 F3       		.byte	0xf3
+ 2579 00e1 01       		.uleb128 0x1
+ 2580 00e2 50       		.byte	0x50
+ 2581 00e3 9F       		.byte	0x9f
+ 2582 00e4 00000000 		.4byte	0
+ 2583 00e8 00000000 		.4byte	0
+ 2584              	.LLST7:
+ 2585 00ec 02000000 		.4byte	.LVL14
+ 2586 00f0 0A000000 		.4byte	.LVL15
+ 2587 00f4 0200     		.2byte	0x2
+ 2588 00f6 30       		.byte	0x30
+ 2589 00f7 9F       		.byte	0x9f
+ 2590 00f8 0A000000 		.4byte	.LVL15
+ 2591 00fc 26000000 		.4byte	.LFE66
+ 2592 0100 0100     		.2byte	0x1
+ 2593 0102 53       		.byte	0x53
+ 2594 0103 00000000 		.4byte	0
+ 2595 0107 00000000 		.4byte	0
+ 2596              	.LLST8:
+ 2597 010b 02000000 		.4byte	.LVL14
+ 2598 010f 0A000000 		.4byte	.LVL15
+ 2599 0113 0100     		.2byte	0x1
+ 2600 0115 52       		.byte	0x52
+ 2601 0116 0A000000 		.4byte	.LVL15
+ 2602 011a 1C000000 		.4byte	.LVL19
+ 2603 011e 0100     		.2byte	0x1
+ 2604 0120 55       		.byte	0x55
+ 2605 0121 00000000 		.4byte	0
+ 2606 0125 00000000 		.4byte	0
+ 2607              	.LLST9:
+ 2608 0129 02000000 		.4byte	.LVL14
+ 2609 012d 0A000000 		.4byte	.LVL15
+ 2610 0131 0200     		.2byte	0x2
+ 2611 0133 30       		.byte	0x30
+ 2612 0134 9F       		.byte	0x9f
+ 2613 0135 0A000000 		.4byte	.LVL15
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 53
+
+
+ 2614 0139 24000000 		.4byte	.LVL21
+ 2615 013d 0100     		.2byte	0x1
+ 2616 013f 56       		.byte	0x56
+ 2617 0140 00000000 		.4byte	0
+ 2618 0144 00000000 		.4byte	0
+ 2619              	.LLST10:
+ 2620 0148 40000000 		.4byte	.LVL30
+ 2621 014c 44000000 		.4byte	.LVL31
+ 2622 0150 0200     		.2byte	0x2
+ 2623 0152 30       		.byte	0x30
+ 2624 0153 9F       		.byte	0x9f
+ 2625 0154 44000000 		.4byte	.LVL31
+ 2626 0158 FA000000 		.4byte	.LVL49
+ 2627 015c 0100     		.2byte	0x1
+ 2628 015e 54       		.byte	0x54
+ 2629 015f 00000000 		.4byte	0
+ 2630 0163 00000000 		.4byte	0
+ 2631              	.LLST11:
+ 2632 0167 00000000 		.4byte	.LVL69
+ 2633 016b A2000000 		.4byte	.LVL70
+ 2634 016f 0100     		.2byte	0x1
+ 2635 0171 50       		.byte	0x50
+ 2636 0172 A2000000 		.4byte	.LVL70
+ 2637 0176 A4000000 		.4byte	.LVL71
+ 2638 017a 0400     		.2byte	0x4
+ 2639 017c F3       		.byte	0xf3
+ 2640 017d 01       		.uleb128 0x1
+ 2641 017e 50       		.byte	0x50
+ 2642 017f 9F       		.byte	0x9f
+ 2643 0180 A4000000 		.4byte	.LVL71
+ 2644 0184 2A010000 		.4byte	.LVL72
+ 2645 0188 0100     		.2byte	0x1
+ 2646 018a 50       		.byte	0x50
+ 2647 018b 2A010000 		.4byte	.LVL72
+ 2648 018f 2C010000 		.4byte	.LVL73
+ 2649 0193 0400     		.2byte	0x4
+ 2650 0195 F3       		.byte	0xf3
+ 2651 0196 01       		.uleb128 0x1
+ 2652 0197 50       		.byte	0x50
+ 2653 0198 9F       		.byte	0x9f
+ 2654 0199 2C010000 		.4byte	.LVL73
+ 2655 019d BC010000 		.4byte	.LVL74
+ 2656 01a1 0100     		.2byte	0x1
+ 2657 01a3 50       		.byte	0x50
+ 2658 01a4 BC010000 		.4byte	.LVL74
+ 2659 01a8 BE010000 		.4byte	.LVL75
+ 2660 01ac 0400     		.2byte	0x4
+ 2661 01ae F3       		.byte	0xf3
+ 2662 01af 01       		.uleb128 0x1
+ 2663 01b0 50       		.byte	0x50
+ 2664 01b1 9F       		.byte	0x9f
+ 2665 01b2 BE010000 		.4byte	.LVL75
+ 2666 01b6 3C020000 		.4byte	.LVL76
+ 2667 01ba 0100     		.2byte	0x1
+ 2668 01bc 50       		.byte	0x50
+ 2669 01bd 3C020000 		.4byte	.LVL76
+ 2670 01c1 3E020000 		.4byte	.LVL77
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 54
+
+
+ 2671 01c5 0400     		.2byte	0x4
+ 2672 01c7 F3       		.byte	0xf3
+ 2673 01c8 01       		.uleb128 0x1
+ 2674 01c9 50       		.byte	0x50
+ 2675 01ca 9F       		.byte	0x9f
+ 2676 01cb 3E020000 		.4byte	.LVL77
+ 2677 01cf 40020000 		.4byte	.LVL78
+ 2678 01d3 0100     		.2byte	0x1
+ 2679 01d5 50       		.byte	0x50
+ 2680 01d6 40020000 		.4byte	.LVL78
+ 2681 01da 42020000 		.4byte	.LVL79
+ 2682 01de 0400     		.2byte	0x4
+ 2683 01e0 F3       		.byte	0xf3
+ 2684 01e1 01       		.uleb128 0x1
+ 2685 01e2 50       		.byte	0x50
+ 2686 01e3 9F       		.byte	0x9f
+ 2687 01e4 42020000 		.4byte	.LVL79
+ 2688 01e8 44020000 		.4byte	.LVL80
+ 2689 01ec 0100     		.2byte	0x1
+ 2690 01ee 50       		.byte	0x50
+ 2691 01ef 44020000 		.4byte	.LVL80
+ 2692 01f3 46020000 		.4byte	.LVL81
+ 2693 01f7 0400     		.2byte	0x4
+ 2694 01f9 F3       		.byte	0xf3
+ 2695 01fa 01       		.uleb128 0x1
+ 2696 01fb 50       		.byte	0x50
+ 2697 01fc 9F       		.byte	0x9f
+ 2698 01fd 46020000 		.4byte	.LVL81
+ 2699 0201 48020000 		.4byte	.LVL82
+ 2700 0205 0100     		.2byte	0x1
+ 2701 0207 50       		.byte	0x50
+ 2702 0208 48020000 		.4byte	.LVL82
+ 2703 020c 4A020000 		.4byte	.LVL83
+ 2704 0210 0400     		.2byte	0x4
+ 2705 0212 F3       		.byte	0xf3
+ 2706 0213 01       		.uleb128 0x1
+ 2707 0214 50       		.byte	0x50
+ 2708 0215 9F       		.byte	0x9f
+ 2709 0216 4A020000 		.4byte	.LVL83
+ 2710 021a 4C020000 		.4byte	.LVL84
+ 2711 021e 0100     		.2byte	0x1
+ 2712 0220 50       		.byte	0x50
+ 2713 0221 4C020000 		.4byte	.LVL84
+ 2714 0225 4E020000 		.4byte	.LVL85
+ 2715 0229 0400     		.2byte	0x4
+ 2716 022b F3       		.byte	0xf3
+ 2717 022c 01       		.uleb128 0x1
+ 2718 022d 50       		.byte	0x50
+ 2719 022e 9F       		.byte	0x9f
+ 2720 022f 4E020000 		.4byte	.LVL85
+ 2721 0233 50020000 		.4byte	.LVL86
+ 2722 0237 0100     		.2byte	0x1
+ 2723 0239 50       		.byte	0x50
+ 2724 023a 50020000 		.4byte	.LVL86
+ 2725 023e 52020000 		.4byte	.LVL87
+ 2726 0242 0400     		.2byte	0x4
+ 2727 0244 F3       		.byte	0xf3
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 55
+
+
+ 2728 0245 01       		.uleb128 0x1
+ 2729 0246 50       		.byte	0x50
+ 2730 0247 9F       		.byte	0x9f
+ 2731 0248 52020000 		.4byte	.LVL87
+ 2732 024c 54020000 		.4byte	.LVL88
+ 2733 0250 0100     		.2byte	0x1
+ 2734 0252 50       		.byte	0x50
+ 2735 0253 54020000 		.4byte	.LVL88
+ 2736 0257 56020000 		.4byte	.LVL89
+ 2737 025b 0400     		.2byte	0x4
+ 2738 025d F3       		.byte	0xf3
+ 2739 025e 01       		.uleb128 0x1
+ 2740 025f 50       		.byte	0x50
+ 2741 0260 9F       		.byte	0x9f
+ 2742 0261 56020000 		.4byte	.LVL89
+ 2743 0265 58020000 		.4byte	.LVL90
+ 2744 0269 0100     		.2byte	0x1
+ 2745 026b 50       		.byte	0x50
+ 2746 026c 58020000 		.4byte	.LVL90
+ 2747 0270 5A020000 		.4byte	.LVL91
+ 2748 0274 0400     		.2byte	0x4
+ 2749 0276 F3       		.byte	0xf3
+ 2750 0277 01       		.uleb128 0x1
+ 2751 0278 50       		.byte	0x50
+ 2752 0279 9F       		.byte	0x9f
+ 2753 027a 5A020000 		.4byte	.LVL91
+ 2754 027e 5C020000 		.4byte	.LVL92
+ 2755 0282 0100     		.2byte	0x1
+ 2756 0284 50       		.byte	0x50
+ 2757 0285 5C020000 		.4byte	.LVL92
+ 2758 0289 5E020000 		.4byte	.LVL93
+ 2759 028d 0400     		.2byte	0x4
+ 2760 028f F3       		.byte	0xf3
+ 2761 0290 01       		.uleb128 0x1
+ 2762 0291 50       		.byte	0x50
+ 2763 0292 9F       		.byte	0x9f
+ 2764 0293 5E020000 		.4byte	.LVL93
+ 2765 0297 60020000 		.4byte	.LVL94
+ 2766 029b 0100     		.2byte	0x1
+ 2767 029d 50       		.byte	0x50
+ 2768 029e 60020000 		.4byte	.LVL94
+ 2769 02a2 62020000 		.4byte	.LVL95
+ 2770 02a6 0400     		.2byte	0x4
+ 2771 02a8 F3       		.byte	0xf3
+ 2772 02a9 01       		.uleb128 0x1
+ 2773 02aa 50       		.byte	0x50
+ 2774 02ab 9F       		.byte	0x9f
+ 2775 02ac 62020000 		.4byte	.LVL95
+ 2776 02b0 64020000 		.4byte	.LVL96
+ 2777 02b4 0100     		.2byte	0x1
+ 2778 02b6 50       		.byte	0x50
+ 2779 02b7 64020000 		.4byte	.LVL96
+ 2780 02bb 66020000 		.4byte	.LVL97
+ 2781 02bf 0400     		.2byte	0x4
+ 2782 02c1 F3       		.byte	0xf3
+ 2783 02c2 01       		.uleb128 0x1
+ 2784 02c3 50       		.byte	0x50
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 56
+
+
+ 2785 02c4 9F       		.byte	0x9f
+ 2786 02c5 66020000 		.4byte	.LVL97
+ 2787 02c9 68020000 		.4byte	.LVL98
+ 2788 02cd 0100     		.2byte	0x1
+ 2789 02cf 50       		.byte	0x50
+ 2790 02d0 68020000 		.4byte	.LVL98
+ 2791 02d4 6A020000 		.4byte	.LVL99
+ 2792 02d8 0400     		.2byte	0x4
+ 2793 02da F3       		.byte	0xf3
+ 2794 02db 01       		.uleb128 0x1
+ 2795 02dc 50       		.byte	0x50
+ 2796 02dd 9F       		.byte	0x9f
+ 2797 02de 6A020000 		.4byte	.LVL99
+ 2798 02e2 6C020000 		.4byte	.LVL100
+ 2799 02e6 0100     		.2byte	0x1
+ 2800 02e8 50       		.byte	0x50
+ 2801 02e9 6C020000 		.4byte	.LVL100
+ 2802 02ed 6E020000 		.4byte	.LVL101
+ 2803 02f1 0400     		.2byte	0x4
+ 2804 02f3 F3       		.byte	0xf3
+ 2805 02f4 01       		.uleb128 0x1
+ 2806 02f5 50       		.byte	0x50
+ 2807 02f6 9F       		.byte	0x9f
+ 2808 02f7 6E020000 		.4byte	.LVL101
+ 2809 02fb 70020000 		.4byte	.LVL102
+ 2810 02ff 0100     		.2byte	0x1
+ 2811 0301 50       		.byte	0x50
+ 2812 0302 70020000 		.4byte	.LVL102
+ 2813 0306 72020000 		.4byte	.LVL103
+ 2814 030a 0400     		.2byte	0x4
+ 2815 030c F3       		.byte	0xf3
+ 2816 030d 01       		.uleb128 0x1
+ 2817 030e 50       		.byte	0x50
+ 2818 030f 9F       		.byte	0x9f
+ 2819 0310 72020000 		.4byte	.LVL103
+ 2820 0314 74020000 		.4byte	.LVL104
+ 2821 0318 0100     		.2byte	0x1
+ 2822 031a 50       		.byte	0x50
+ 2823 031b 74020000 		.4byte	.LVL104
+ 2824 031f 76020000 		.4byte	.LVL105
+ 2825 0323 0400     		.2byte	0x4
+ 2826 0325 F3       		.byte	0xf3
+ 2827 0326 01       		.uleb128 0x1
+ 2828 0327 50       		.byte	0x50
+ 2829 0328 9F       		.byte	0x9f
+ 2830 0329 76020000 		.4byte	.LVL105
+ 2831 032d 78020000 		.4byte	.LVL106
+ 2832 0331 0100     		.2byte	0x1
+ 2833 0333 50       		.byte	0x50
+ 2834 0334 78020000 		.4byte	.LVL106
+ 2835 0338 7A020000 		.4byte	.LVL107
+ 2836 033c 0400     		.2byte	0x4
+ 2837 033e F3       		.byte	0xf3
+ 2838 033f 01       		.uleb128 0x1
+ 2839 0340 50       		.byte	0x50
+ 2840 0341 9F       		.byte	0x9f
+ 2841 0342 7A020000 		.4byte	.LVL107
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 57
+
+
+ 2842 0346 7C020000 		.4byte	.LVL108
+ 2843 034a 0100     		.2byte	0x1
+ 2844 034c 50       		.byte	0x50
+ 2845 034d 7C020000 		.4byte	.LVL108
+ 2846 0351 7E020000 		.4byte	.LVL109
+ 2847 0355 0400     		.2byte	0x4
+ 2848 0357 F3       		.byte	0xf3
+ 2849 0358 01       		.uleb128 0x1
+ 2850 0359 50       		.byte	0x50
+ 2851 035a 9F       		.byte	0x9f
+ 2852 035b 7E020000 		.4byte	.LVL109
+ 2853 035f 80020000 		.4byte	.LVL110
+ 2854 0363 0100     		.2byte	0x1
+ 2855 0365 50       		.byte	0x50
+ 2856 0366 80020000 		.4byte	.LVL110
+ 2857 036a 82020000 		.4byte	.LVL111
+ 2858 036e 0400     		.2byte	0x4
+ 2859 0370 F3       		.byte	0xf3
+ 2860 0371 01       		.uleb128 0x1
+ 2861 0372 50       		.byte	0x50
+ 2862 0373 9F       		.byte	0x9f
+ 2863 0374 82020000 		.4byte	.LVL111
+ 2864 0378 84020000 		.4byte	.LVL112
+ 2865 037c 0100     		.2byte	0x1
+ 2866 037e 50       		.byte	0x50
+ 2867 037f 84020000 		.4byte	.LVL112
+ 2868 0383 86020000 		.4byte	.LVL113
+ 2869 0387 0400     		.2byte	0x4
+ 2870 0389 F3       		.byte	0xf3
+ 2871 038a 01       		.uleb128 0x1
+ 2872 038b 50       		.byte	0x50
+ 2873 038c 9F       		.byte	0x9f
+ 2874 038d 86020000 		.4byte	.LVL113
+ 2875 0391 88020000 		.4byte	.LVL114
+ 2876 0395 0100     		.2byte	0x1
+ 2877 0397 50       		.byte	0x50
+ 2878 0398 88020000 		.4byte	.LVL114
+ 2879 039c 8A020000 		.4byte	.LVL115
+ 2880 03a0 0400     		.2byte	0x4
+ 2881 03a2 F3       		.byte	0xf3
+ 2882 03a3 01       		.uleb128 0x1
+ 2883 03a4 50       		.byte	0x50
+ 2884 03a5 9F       		.byte	0x9f
+ 2885 03a6 8A020000 		.4byte	.LVL115
+ 2886 03aa 8C020000 		.4byte	.LVL116
+ 2887 03ae 0100     		.2byte	0x1
+ 2888 03b0 50       		.byte	0x50
+ 2889 03b1 8C020000 		.4byte	.LVL116
+ 2890 03b5 8E020000 		.4byte	.LVL117
+ 2891 03b9 0400     		.2byte	0x4
+ 2892 03bb F3       		.byte	0xf3
+ 2893 03bc 01       		.uleb128 0x1
+ 2894 03bd 50       		.byte	0x50
+ 2895 03be 9F       		.byte	0x9f
+ 2896 03bf 8E020000 		.4byte	.LVL117
+ 2897 03c3 90020000 		.4byte	.LVL118
+ 2898 03c7 0100     		.2byte	0x1
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 58
+
+
+ 2899 03c9 50       		.byte	0x50
+ 2900 03ca 90020000 		.4byte	.LVL118
+ 2901 03ce 92020000 		.4byte	.LVL119
+ 2902 03d2 0400     		.2byte	0x4
+ 2903 03d4 F3       		.byte	0xf3
+ 2904 03d5 01       		.uleb128 0x1
+ 2905 03d6 50       		.byte	0x50
+ 2906 03d7 9F       		.byte	0x9f
+ 2907 03d8 92020000 		.4byte	.LVL119
+ 2908 03dc 94020000 		.4byte	.LVL120
+ 2909 03e0 0100     		.2byte	0x1
+ 2910 03e2 50       		.byte	0x50
+ 2911 03e3 94020000 		.4byte	.LVL120
+ 2912 03e7 96020000 		.4byte	.LVL121
+ 2913 03eb 0400     		.2byte	0x4
+ 2914 03ed F3       		.byte	0xf3
+ 2915 03ee 01       		.uleb128 0x1
+ 2916 03ef 50       		.byte	0x50
+ 2917 03f0 9F       		.byte	0x9f
+ 2918 03f1 96020000 		.4byte	.LVL121
+ 2919 03f5 98020000 		.4byte	.LVL122
+ 2920 03f9 0100     		.2byte	0x1
+ 2921 03fb 50       		.byte	0x50
+ 2922 03fc 98020000 		.4byte	.LVL122
+ 2923 0400 9A020000 		.4byte	.LVL123
+ 2924 0404 0400     		.2byte	0x4
+ 2925 0406 F3       		.byte	0xf3
+ 2926 0407 01       		.uleb128 0x1
+ 2927 0408 50       		.byte	0x50
+ 2928 0409 9F       		.byte	0x9f
+ 2929 040a 9A020000 		.4byte	.LVL123
+ 2930 040e 9C020000 		.4byte	.LVL124
+ 2931 0412 0100     		.2byte	0x1
+ 2932 0414 50       		.byte	0x50
+ 2933 0415 9C020000 		.4byte	.LVL124
+ 2934 0419 9E020000 		.4byte	.LVL125
+ 2935 041d 0400     		.2byte	0x4
+ 2936 041f F3       		.byte	0xf3
+ 2937 0420 01       		.uleb128 0x1
+ 2938 0421 50       		.byte	0x50
+ 2939 0422 9F       		.byte	0x9f
+ 2940 0423 9E020000 		.4byte	.LVL125
+ 2941 0427 A0020000 		.4byte	.LVL126
+ 2942 042b 0100     		.2byte	0x1
+ 2943 042d 50       		.byte	0x50
+ 2944 042e A0020000 		.4byte	.LVL126
+ 2945 0432 A2020000 		.4byte	.LVL127
+ 2946 0436 0400     		.2byte	0x4
+ 2947 0438 F3       		.byte	0xf3
+ 2948 0439 01       		.uleb128 0x1
+ 2949 043a 50       		.byte	0x50
+ 2950 043b 9F       		.byte	0x9f
+ 2951 043c A2020000 		.4byte	.LVL127
+ 2952 0440 A4020000 		.4byte	.LVL128
+ 2953 0444 0100     		.2byte	0x1
+ 2954 0446 50       		.byte	0x50
+ 2955 0447 A4020000 		.4byte	.LVL128
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 59
+
+
+ 2956 044b A6020000 		.4byte	.LVL129
+ 2957 044f 0400     		.2byte	0x4
+ 2958 0451 F3       		.byte	0xf3
+ 2959 0452 01       		.uleb128 0x1
+ 2960 0453 50       		.byte	0x50
+ 2961 0454 9F       		.byte	0x9f
+ 2962 0455 A6020000 		.4byte	.LVL129
+ 2963 0459 A8020000 		.4byte	.LVL130
+ 2964 045d 0100     		.2byte	0x1
+ 2965 045f 50       		.byte	0x50
+ 2966 0460 A8020000 		.4byte	.LVL130
+ 2967 0464 AA020000 		.4byte	.LVL131
+ 2968 0468 0400     		.2byte	0x4
+ 2969 046a F3       		.byte	0xf3
+ 2970 046b 01       		.uleb128 0x1
+ 2971 046c 50       		.byte	0x50
+ 2972 046d 9F       		.byte	0x9f
+ 2973 046e AA020000 		.4byte	.LVL131
+ 2974 0472 AC020000 		.4byte	.LVL132
+ 2975 0476 0100     		.2byte	0x1
+ 2976 0478 50       		.byte	0x50
+ 2977 0479 AC020000 		.4byte	.LVL132
+ 2978 047d AE020000 		.4byte	.LVL133
+ 2979 0481 0400     		.2byte	0x4
+ 2980 0483 F3       		.byte	0xf3
+ 2981 0484 01       		.uleb128 0x1
+ 2982 0485 50       		.byte	0x50
+ 2983 0486 9F       		.byte	0x9f
+ 2984 0487 AE020000 		.4byte	.LVL133
+ 2985 048b B0020000 		.4byte	.LVL134
+ 2986 048f 0100     		.2byte	0x1
+ 2987 0491 50       		.byte	0x50
+ 2988 0492 B0020000 		.4byte	.LVL134
+ 2989 0496 B2020000 		.4byte	.LVL135
+ 2990 049a 0400     		.2byte	0x4
+ 2991 049c F3       		.byte	0xf3
+ 2992 049d 01       		.uleb128 0x1
+ 2993 049e 50       		.byte	0x50
+ 2994 049f 9F       		.byte	0x9f
+ 2995 04a0 B2020000 		.4byte	.LVL135
+ 2996 04a4 B4020000 		.4byte	.LVL136
+ 2997 04a8 0100     		.2byte	0x1
+ 2998 04aa 50       		.byte	0x50
+ 2999 04ab B4020000 		.4byte	.LVL136
+ 3000 04af B6020000 		.4byte	.LVL137
+ 3001 04b3 0400     		.2byte	0x4
+ 3002 04b5 F3       		.byte	0xf3
+ 3003 04b6 01       		.uleb128 0x1
+ 3004 04b7 50       		.byte	0x50
+ 3005 04b8 9F       		.byte	0x9f
+ 3006 04b9 B6020000 		.4byte	.LVL137
+ 3007 04bd B8020000 		.4byte	.LVL138
+ 3008 04c1 0100     		.2byte	0x1
+ 3009 04c3 50       		.byte	0x50
+ 3010 04c4 B8020000 		.4byte	.LVL138
+ 3011 04c8 BA020000 		.4byte	.LVL139
+ 3012 04cc 0400     		.2byte	0x4
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 60
+
+
+ 3013 04ce F3       		.byte	0xf3
+ 3014 04cf 01       		.uleb128 0x1
+ 3015 04d0 50       		.byte	0x50
+ 3016 04d1 9F       		.byte	0x9f
+ 3017 04d2 BA020000 		.4byte	.LVL139
+ 3018 04d6 BC020000 		.4byte	.LVL140
+ 3019 04da 0100     		.2byte	0x1
+ 3020 04dc 50       		.byte	0x50
+ 3021 04dd BC020000 		.4byte	.LVL140
+ 3022 04e1 BE020000 		.4byte	.LVL141
+ 3023 04e5 0400     		.2byte	0x4
+ 3024 04e7 F3       		.byte	0xf3
+ 3025 04e8 01       		.uleb128 0x1
+ 3026 04e9 50       		.byte	0x50
+ 3027 04ea 9F       		.byte	0x9f
+ 3028 04eb BE020000 		.4byte	.LVL141
+ 3029 04ef C0020000 		.4byte	.LVL142
+ 3030 04f3 0100     		.2byte	0x1
+ 3031 04f5 50       		.byte	0x50
+ 3032 04f6 C0020000 		.4byte	.LVL142
+ 3033 04fa C2020000 		.4byte	.LVL143
+ 3034 04fe 0400     		.2byte	0x4
+ 3035 0500 F3       		.byte	0xf3
+ 3036 0501 01       		.uleb128 0x1
+ 3037 0502 50       		.byte	0x50
+ 3038 0503 9F       		.byte	0x9f
+ 3039 0504 C2020000 		.4byte	.LVL143
+ 3040 0508 C4020000 		.4byte	.LVL144
+ 3041 050c 0100     		.2byte	0x1
+ 3042 050e 50       		.byte	0x50
+ 3043 050f C4020000 		.4byte	.LVL144
+ 3044 0513 C6020000 		.4byte	.LVL145
+ 3045 0517 0400     		.2byte	0x4
+ 3046 0519 F3       		.byte	0xf3
+ 3047 051a 01       		.uleb128 0x1
+ 3048 051b 50       		.byte	0x50
+ 3049 051c 9F       		.byte	0x9f
+ 3050 051d C6020000 		.4byte	.LVL145
+ 3051 0521 C8020000 		.4byte	.LVL146
+ 3052 0525 0100     		.2byte	0x1
+ 3053 0527 50       		.byte	0x50
+ 3054 0528 C8020000 		.4byte	.LVL146
+ 3055 052c CA020000 		.4byte	.LVL147
+ 3056 0530 0400     		.2byte	0x4
+ 3057 0532 F3       		.byte	0xf3
+ 3058 0533 01       		.uleb128 0x1
+ 3059 0534 50       		.byte	0x50
+ 3060 0535 9F       		.byte	0x9f
+ 3061 0536 CA020000 		.4byte	.LVL147
+ 3062 053a CC020000 		.4byte	.LVL148
+ 3063 053e 0100     		.2byte	0x1
+ 3064 0540 50       		.byte	0x50
+ 3065 0541 CC020000 		.4byte	.LVL148
+ 3066 0545 CE020000 		.4byte	.LVL149
+ 3067 0549 0400     		.2byte	0x4
+ 3068 054b F3       		.byte	0xf3
+ 3069 054c 01       		.uleb128 0x1
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 61
+
+
+ 3070 054d 50       		.byte	0x50
+ 3071 054e 9F       		.byte	0x9f
+ 3072 054f CE020000 		.4byte	.LVL149
+ 3073 0553 D0020000 		.4byte	.LVL150
+ 3074 0557 0100     		.2byte	0x1
+ 3075 0559 50       		.byte	0x50
+ 3076 055a D0020000 		.4byte	.LVL150
+ 3077 055e D2020000 		.4byte	.LVL151
+ 3078 0562 0400     		.2byte	0x4
+ 3079 0564 F3       		.byte	0xf3
+ 3080 0565 01       		.uleb128 0x1
+ 3081 0566 50       		.byte	0x50
+ 3082 0567 9F       		.byte	0x9f
+ 3083 0568 D2020000 		.4byte	.LVL151
+ 3084 056c D4020000 		.4byte	.LVL152
+ 3085 0570 0100     		.2byte	0x1
+ 3086 0572 50       		.byte	0x50
+ 3087 0573 D4020000 		.4byte	.LVL152
+ 3088 0577 D6020000 		.4byte	.LVL153
+ 3089 057b 0400     		.2byte	0x4
+ 3090 057d F3       		.byte	0xf3
+ 3091 057e 01       		.uleb128 0x1
+ 3092 057f 50       		.byte	0x50
+ 3093 0580 9F       		.byte	0x9f
+ 3094 0581 D6020000 		.4byte	.LVL153
+ 3095 0585 D8020000 		.4byte	.LVL154
+ 3096 0589 0100     		.2byte	0x1
+ 3097 058b 50       		.byte	0x50
+ 3098 058c D8020000 		.4byte	.LVL154
+ 3099 0590 DA020000 		.4byte	.LVL155
+ 3100 0594 0400     		.2byte	0x4
+ 3101 0596 F3       		.byte	0xf3
+ 3102 0597 01       		.uleb128 0x1
+ 3103 0598 50       		.byte	0x50
+ 3104 0599 9F       		.byte	0x9f
+ 3105 059a DA020000 		.4byte	.LVL155
+ 3106 059e DC020000 		.4byte	.LVL156
+ 3107 05a2 0100     		.2byte	0x1
+ 3108 05a4 50       		.byte	0x50
+ 3109 05a5 DC020000 		.4byte	.LVL156
+ 3110 05a9 DE020000 		.4byte	.LVL157
+ 3111 05ad 0400     		.2byte	0x4
+ 3112 05af F3       		.byte	0xf3
+ 3113 05b0 01       		.uleb128 0x1
+ 3114 05b1 50       		.byte	0x50
+ 3115 05b2 9F       		.byte	0x9f
+ 3116 05b3 DE020000 		.4byte	.LVL157
+ 3117 05b7 E0020000 		.4byte	.LVL158
+ 3118 05bb 0100     		.2byte	0x1
+ 3119 05bd 50       		.byte	0x50
+ 3120 05be E0020000 		.4byte	.LVL158
+ 3121 05c2 E2020000 		.4byte	.LVL159
+ 3122 05c6 0400     		.2byte	0x4
+ 3123 05c8 F3       		.byte	0xf3
+ 3124 05c9 01       		.uleb128 0x1
+ 3125 05ca 50       		.byte	0x50
+ 3126 05cb 9F       		.byte	0x9f
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 62
+
+
+ 3127 05cc E2020000 		.4byte	.LVL159
+ 3128 05d0 E4020000 		.4byte	.LVL160
+ 3129 05d4 0100     		.2byte	0x1
+ 3130 05d6 50       		.byte	0x50
+ 3131 05d7 E4020000 		.4byte	.LVL160
+ 3132 05db E6020000 		.4byte	.LVL161
+ 3133 05df 0400     		.2byte	0x4
+ 3134 05e1 F3       		.byte	0xf3
+ 3135 05e2 01       		.uleb128 0x1
+ 3136 05e3 50       		.byte	0x50
+ 3137 05e4 9F       		.byte	0x9f
+ 3138 05e5 E6020000 		.4byte	.LVL161
+ 3139 05e9 E8020000 		.4byte	.LVL162
+ 3140 05ed 0100     		.2byte	0x1
+ 3141 05ef 50       		.byte	0x50
+ 3142 05f0 E8020000 		.4byte	.LVL162
+ 3143 05f4 EA020000 		.4byte	.LVL163
+ 3144 05f8 0400     		.2byte	0x4
+ 3145 05fa F3       		.byte	0xf3
+ 3146 05fb 01       		.uleb128 0x1
+ 3147 05fc 50       		.byte	0x50
+ 3148 05fd 9F       		.byte	0x9f
+ 3149 05fe EA020000 		.4byte	.LVL163
+ 3150 0602 EC020000 		.4byte	.LVL164
+ 3151 0606 0100     		.2byte	0x1
+ 3152 0608 50       		.byte	0x50
+ 3153 0609 EC020000 		.4byte	.LVL164
+ 3154 060d EE020000 		.4byte	.LVL165
+ 3155 0611 0400     		.2byte	0x4
+ 3156 0613 F3       		.byte	0xf3
+ 3157 0614 01       		.uleb128 0x1
+ 3158 0615 50       		.byte	0x50
+ 3159 0616 9F       		.byte	0x9f
+ 3160 0617 EE020000 		.4byte	.LVL165
+ 3161 061b F0020000 		.4byte	.LVL166
+ 3162 061f 0100     		.2byte	0x1
+ 3163 0621 50       		.byte	0x50
+ 3164 0622 F0020000 		.4byte	.LVL166
+ 3165 0626 F2020000 		.4byte	.LVL167
+ 3166 062a 0400     		.2byte	0x4
+ 3167 062c F3       		.byte	0xf3
+ 3168 062d 01       		.uleb128 0x1
+ 3169 062e 50       		.byte	0x50
+ 3170 062f 9F       		.byte	0x9f
+ 3171 0630 F2020000 		.4byte	.LVL167
+ 3172 0634 F4020000 		.4byte	.LVL168
+ 3173 0638 0100     		.2byte	0x1
+ 3174 063a 50       		.byte	0x50
+ 3175 063b F4020000 		.4byte	.LVL168
+ 3176 063f F6020000 		.4byte	.LVL169
+ 3177 0643 0400     		.2byte	0x4
+ 3178 0645 F3       		.byte	0xf3
+ 3179 0646 01       		.uleb128 0x1
+ 3180 0647 50       		.byte	0x50
+ 3181 0648 9F       		.byte	0x9f
+ 3182 0649 F6020000 		.4byte	.LVL169
+ 3183 064d F8020000 		.4byte	.LVL170
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 63
+
+
+ 3184 0651 0100     		.2byte	0x1
+ 3185 0653 50       		.byte	0x50
+ 3186 0654 F8020000 		.4byte	.LVL170
+ 3187 0658 FA020000 		.4byte	.LVL171
+ 3188 065c 0400     		.2byte	0x4
+ 3189 065e F3       		.byte	0xf3
+ 3190 065f 01       		.uleb128 0x1
+ 3191 0660 50       		.byte	0x50
+ 3192 0661 9F       		.byte	0x9f
+ 3193 0662 FA020000 		.4byte	.LVL171
+ 3194 0666 FC020000 		.4byte	.LVL172
+ 3195 066a 0100     		.2byte	0x1
+ 3196 066c 50       		.byte	0x50
+ 3197 066d FC020000 		.4byte	.LVL172
+ 3198 0671 FE020000 		.4byte	.LVL173
+ 3199 0675 0400     		.2byte	0x4
+ 3200 0677 F3       		.byte	0xf3
+ 3201 0678 01       		.uleb128 0x1
+ 3202 0679 50       		.byte	0x50
+ 3203 067a 9F       		.byte	0x9f
+ 3204 067b FE020000 		.4byte	.LVL173
+ 3205 067f 00030000 		.4byte	.LVL174
+ 3206 0683 0100     		.2byte	0x1
+ 3207 0685 50       		.byte	0x50
+ 3208 0686 00030000 		.4byte	.LVL174
+ 3209 068a 02030000 		.4byte	.LVL175
+ 3210 068e 0400     		.2byte	0x4
+ 3211 0690 F3       		.byte	0xf3
+ 3212 0691 01       		.uleb128 0x1
+ 3213 0692 50       		.byte	0x50
+ 3214 0693 9F       		.byte	0x9f
+ 3215 0694 02030000 		.4byte	.LVL175
+ 3216 0698 04030000 		.4byte	.LVL176
+ 3217 069c 0100     		.2byte	0x1
+ 3218 069e 50       		.byte	0x50
+ 3219 069f 04030000 		.4byte	.LVL176
+ 3220 06a3 06030000 		.4byte	.LVL177
+ 3221 06a7 0400     		.2byte	0x4
+ 3222 06a9 F3       		.byte	0xf3
+ 3223 06aa 01       		.uleb128 0x1
+ 3224 06ab 50       		.byte	0x50
+ 3225 06ac 9F       		.byte	0x9f
+ 3226 06ad 06030000 		.4byte	.LVL177
+ 3227 06b1 08030000 		.4byte	.LVL178
+ 3228 06b5 0100     		.2byte	0x1
+ 3229 06b7 50       		.byte	0x50
+ 3230 06b8 08030000 		.4byte	.LVL178
+ 3231 06bc 0A030000 		.4byte	.LVL179
+ 3232 06c0 0400     		.2byte	0x4
+ 3233 06c2 F3       		.byte	0xf3
+ 3234 06c3 01       		.uleb128 0x1
+ 3235 06c4 50       		.byte	0x50
+ 3236 06c5 9F       		.byte	0x9f
+ 3237 06c6 0A030000 		.4byte	.LVL179
+ 3238 06ca 0C030000 		.4byte	.LVL180
+ 3239 06ce 0100     		.2byte	0x1
+ 3240 06d0 50       		.byte	0x50
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 64
+
+
+ 3241 06d1 0C030000 		.4byte	.LVL180
+ 3242 06d5 0E030000 		.4byte	.LVL181
+ 3243 06d9 0400     		.2byte	0x4
+ 3244 06db F3       		.byte	0xf3
+ 3245 06dc 01       		.uleb128 0x1
+ 3246 06dd 50       		.byte	0x50
+ 3247 06de 9F       		.byte	0x9f
+ 3248 06df 0E030000 		.4byte	.LVL181
+ 3249 06e3 10030000 		.4byte	.LVL182
+ 3250 06e7 0100     		.2byte	0x1
+ 3251 06e9 50       		.byte	0x50
+ 3252 06ea 10030000 		.4byte	.LVL182
+ 3253 06ee 12030000 		.4byte	.LVL183
+ 3254 06f2 0400     		.2byte	0x4
+ 3255 06f4 F3       		.byte	0xf3
+ 3256 06f5 01       		.uleb128 0x1
+ 3257 06f6 50       		.byte	0x50
+ 3258 06f7 9F       		.byte	0x9f
+ 3259 06f8 12030000 		.4byte	.LVL183
+ 3260 06fc 14030000 		.4byte	.LVL184
+ 3261 0700 0100     		.2byte	0x1
+ 3262 0702 50       		.byte	0x50
+ 3263 0703 14030000 		.4byte	.LVL184
+ 3264 0707 16030000 		.4byte	.LVL185
+ 3265 070b 0400     		.2byte	0x4
+ 3266 070d F3       		.byte	0xf3
+ 3267 070e 01       		.uleb128 0x1
+ 3268 070f 50       		.byte	0x50
+ 3269 0710 9F       		.byte	0x9f
+ 3270 0711 16030000 		.4byte	.LVL185
+ 3271 0715 18030000 		.4byte	.LVL186
+ 3272 0719 0100     		.2byte	0x1
+ 3273 071b 50       		.byte	0x50
+ 3274 071c 18030000 		.4byte	.LVL186
+ 3275 0720 1A030000 		.4byte	.LVL187
+ 3276 0724 0400     		.2byte	0x4
+ 3277 0726 F3       		.byte	0xf3
+ 3278 0727 01       		.uleb128 0x1
+ 3279 0728 50       		.byte	0x50
+ 3280 0729 9F       		.byte	0x9f
+ 3281 072a 1A030000 		.4byte	.LVL187
+ 3282 072e 1C030000 		.4byte	.LVL188
+ 3283 0732 0100     		.2byte	0x1
+ 3284 0734 50       		.byte	0x50
+ 3285 0735 1C030000 		.4byte	.LVL188
+ 3286 0739 1E030000 		.4byte	.LVL189
+ 3287 073d 0400     		.2byte	0x4
+ 3288 073f F3       		.byte	0xf3
+ 3289 0740 01       		.uleb128 0x1
+ 3290 0741 50       		.byte	0x50
+ 3291 0742 9F       		.byte	0x9f
+ 3292 0743 1E030000 		.4byte	.LVL189
+ 3293 0747 20030000 		.4byte	.LVL190
+ 3294 074b 0100     		.2byte	0x1
+ 3295 074d 50       		.byte	0x50
+ 3296 074e 20030000 		.4byte	.LVL190
+ 3297 0752 22030000 		.4byte	.LVL191
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 65
+
+
+ 3298 0756 0400     		.2byte	0x4
+ 3299 0758 F3       		.byte	0xf3
+ 3300 0759 01       		.uleb128 0x1
+ 3301 075a 50       		.byte	0x50
+ 3302 075b 9F       		.byte	0x9f
+ 3303 075c 22030000 		.4byte	.LVL191
+ 3304 0760 24030000 		.4byte	.LVL192
+ 3305 0764 0100     		.2byte	0x1
+ 3306 0766 50       		.byte	0x50
+ 3307 0767 24030000 		.4byte	.LVL192
+ 3308 076b 26030000 		.4byte	.LVL193
+ 3309 076f 0400     		.2byte	0x4
+ 3310 0771 F3       		.byte	0xf3
+ 3311 0772 01       		.uleb128 0x1
+ 3312 0773 50       		.byte	0x50
+ 3313 0774 9F       		.byte	0x9f
+ 3314 0775 26030000 		.4byte	.LVL193
+ 3315 0779 28030000 		.4byte	.LVL194
+ 3316 077d 0100     		.2byte	0x1
+ 3317 077f 50       		.byte	0x50
+ 3318 0780 28030000 		.4byte	.LVL194
+ 3319 0784 2A030000 		.4byte	.LFE68
+ 3320 0788 0400     		.2byte	0x4
+ 3321 078a F3       		.byte	0xf3
+ 3322 078b 01       		.uleb128 0x1
+ 3323 078c 50       		.byte	0x50
+ 3324 078d 9F       		.byte	0x9f
+ 3325 078e 00000000 		.4byte	0
+ 3326 0792 00000000 		.4byte	0
+ 3327              	.LLST12:
+ 3328 0796 00000000 		.4byte	.LVL69
+ 3329 079a 28030000 		.4byte	.LVL194
+ 3330 079e 0200     		.2byte	0x2
+ 3331 07a0 30       		.byte	0x30
+ 3332 07a1 9F       		.byte	0x9f
+ 3333 07a2 28030000 		.4byte	.LVL194
+ 3334 07a6 2A030000 		.4byte	.LFE68
+ 3335 07aa 0100     		.2byte	0x1
+ 3336 07ac 50       		.byte	0x50
+ 3337 07ad 00000000 		.4byte	0
+ 3338 07b1 00000000 		.4byte	0
+ 3339              		.section	.debug_aranges,"",%progbits
+ 3340 0000 3C000000 		.4byte	0x3c
+ 3341 0004 0200     		.2byte	0x2
+ 3342 0006 00000000 		.4byte	.Ldebug_info0
+ 3343 000a 04       		.byte	0x4
+ 3344 000b 00       		.byte	0
+ 3345 000c 0000     		.2byte	0
+ 3346 000e 0000     		.2byte	0
+ 3347 0010 00000000 		.4byte	.LFB64
+ 3348 0014 1E000000 		.4byte	.LFE64-.LFB64
+ 3349 0018 00000000 		.4byte	.LFB65
+ 3350 001c 1E000000 		.4byte	.LFE65-.LFB65
+ 3351 0020 00000000 		.4byte	.LFB66
+ 3352 0024 26000000 		.4byte	.LFE66-.LFB66
+ 3353 0028 00000000 		.4byte	.LFB67
+ 3354 002c 10020000 		.4byte	.LFE67-.LFB67
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 66
+
+
+ 3355 0030 00000000 		.4byte	.LFB68
+ 3356 0034 2A030000 		.4byte	.LFE68-.LFB68
+ 3357 0038 00000000 		.4byte	0
+ 3358 003c 00000000 		.4byte	0
+ 3359              		.section	.debug_ranges,"",%progbits
+ 3360              	.Ldebug_ranges0:
+ 3361 0000 00000000 		.4byte	.LFB64
+ 3362 0004 1E000000 		.4byte	.LFE64
+ 3363 0008 00000000 		.4byte	.LFB65
+ 3364 000c 1E000000 		.4byte	.LFE65
+ 3365 0010 00000000 		.4byte	.LFB66
+ 3366 0014 26000000 		.4byte	.LFE66
+ 3367 0018 00000000 		.4byte	.LFB67
+ 3368 001c 10020000 		.4byte	.LFE67
+ 3369 0020 00000000 		.4byte	.LFB68
+ 3370 0024 2A030000 		.4byte	.LFE68
+ 3371 0028 00000000 		.4byte	0
+ 3372 002c 00000000 		.4byte	0
+ 3373              		.section	.debug_line,"",%progbits
+ 3374              	.Ldebug_line0:
+ 3375 0000 64030000 		.section	.debug_str,"MS",%progbits,1
+ 3375      02000A02 
+ 3375      00000201 
+ 3375      FB0E0D00 
+ 3375      01010101 
+ 3376              	.LASF6:
+ 3377 0000 6C6F6E67 		.ascii	"long long int\000"
+ 3377      206C6F6E 
+ 3377      6720696E 
+ 3377      7400
+ 3378              	.LASF20:
+ 3379 000e 64617461 		.ascii	"datapin\000"
+ 3379      70696E00 
+ 3380              	.LASF39:
+ 3381 0016 55415254 		.ascii	"UART_1_Start\000"
+ 3381      5F315F53 
+ 3381      74617274 
+ 3381      00
+ 3382              	.LASF18:
+ 3383 0023 636F6E6E 		.ascii	"conn_sensors\000"
+ 3383      5F73656E 
+ 3383      736F7273 
+ 3383      00
+ 3384              	.LASF9:
+ 3385 0030 5F5F696E 		.ascii	"__int32_t\000"
+ 3385      7433325F 
+ 3385      7400
+ 3386              	.LASF3:
+ 3387 003a 73686F72 		.ascii	"short unsigned int\000"
+ 3387      7420756E 
+ 3387      7369676E 
+ 3387      65642069 
+ 3387      6E7400
+ 3388              	.LASF2:
+ 3389 004d 73686F72 		.ascii	"short int\000"
+ 3389      7420696E 
+ 3389      7400
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 67
+
+
+ 3390              	.LASF14:
+ 3391 0057 646F7562 		.ascii	"double\000"
+ 3391      6C6500
+ 3392              	.LASF13:
+ 3393 005e 666C6F61 		.ascii	"float\000"
+ 3393      7400
+ 3394              	.LASF11:
+ 3395 0064 75696E74 		.ascii	"uint8\000"
+ 3395      3800
+ 3396              	.LASF1:
+ 3397 006a 756E7369 		.ascii	"unsigned char\000"
+ 3397      676E6564 
+ 3397      20636861 
+ 3397      7200
+ 3398              	.LASF44:
+ 3399 0078 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 3399      43313120 
+ 3399      352E342E 
+ 3399      31203230 
+ 3399      31363036 
+ 3400 00ab 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 3400      20726576 
+ 3400      6973696F 
+ 3400      6E203233 
+ 3400      37373135 
+ 3401 00de 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 3401      66756E63 
+ 3401      74696F6E 
+ 3401      2D736563 
+ 3401      74696F6E 
+ 3402              	.LASF30:
+ 3403 0106 414D7578 		.ascii	"AMux_1_FastSelect\000"
+ 3403      5F315F46 
+ 3403      61737453 
+ 3403      656C6563 
+ 3403      7400
+ 3404              	.LASF23:
+ 3405 0118 74656D70 		.ascii	"temp\000"
+ 3405      00
+ 3406              	.LASF38:
+ 3407 011d 50574D5F 		.ascii	"PWM_1_Start\000"
+ 3407      315F5374 
+ 3407      61727400 
+ 3408              	.LASF26:
+ 3409 0129 54585F44 		.ascii	"TX_DATA\000"
+ 3409      41544100 
+ 3410              	.LASF24:
+ 3411 0131 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 3411      52784275 
+ 3411      66666572 
+ 3411      00
+ 3412              	.LASF21:
+ 3413 013e 766F6C74 		.ascii	"volts2temp\000"
+ 3413      73327465 
+ 3413      6D7000
+ 3414              	.LASF5:
+ 3415 0149 6C6F6E67 		.ascii	"long unsigned int\000"
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 68
+
+
+ 3415      20756E73 
+ 3415      69676E65 
+ 3415      6420696E 
+ 3415      7400
+ 3416              	.LASF25:
+ 3417 015b 52585F44 		.ascii	"RX_DATA_P1\000"
+ 3417      4154415F 
+ 3417      503100
+ 3418              	.LASF36:
+ 3419 0166 43414E5F 		.ascii	"CAN_1_SendMsg0\000"
+ 3419      315F5365 
+ 3419      6E644D73 
+ 3419      673000
+ 3420              	.LASF37:
+ 3421 0175 43414E5F 		.ascii	"CAN_1_SendMsg1\000"
+ 3421      315F5365 
+ 3421      6E644D73 
+ 3421      673100
+ 3422              	.LASF12:
+ 3423 0184 75696E74 		.ascii	"uint16\000"
+ 3423      313600
+ 3424              	.LASF47:
+ 3425 018b 6D61696E 		.ascii	"main\000"
+ 3425      00
+ 3426              	.LASF32:
+ 3427 0190 4144435F 		.ascii	"ADC_DelSig_1_GetResult16\000"
+ 3427      44656C53 
+ 3427      69675F31 
+ 3427      5F476574 
+ 3427      52657375 
+ 3428              	.LASF40:
+ 3429 01a9 4144435F 		.ascii	"ADC_DelSig_1_Start\000"
+ 3429      44656C53 
+ 3429      69675F31 
+ 3429      5F537461 
+ 3429      727400
+ 3430              	.LASF8:
+ 3431 01bc 756E7369 		.ascii	"unsigned int\000"
+ 3431      676E6564 
+ 3431      20696E74 
+ 3431      00
+ 3432              	.LASF33:
+ 3433 01c9 4144435F 		.ascii	"ADC_DelSig_1_CountsTo_mVolts\000"
+ 3433      44656C53 
+ 3433      69675F31 
+ 3433      5F436F75 
+ 3433      6E747354 
+ 3434              	.LASF7:
+ 3435 01e6 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 3435      206C6F6E 
+ 3435      6720756E 
+ 3435      7369676E 
+ 3435      65642069 
+ 3436              	.LASF22:
+ 3437 01fd 766F6C74 		.ascii	"volts\000"
+ 3437      7300
+ 3438              	.LASF10:
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 69
+
+
+ 3439 0203 696E7433 		.ascii	"int32_t\000"
+ 3439      325F7400 
+ 3440              	.LASF19:
+ 3441 020b 5472616E 		.ascii	"TransmitBuffer\000"
+ 3441      736D6974 
+ 3441      42756666 
+ 3441      657200
+ 3442              	.LASF35:
+ 3443 021a 50574D5F 		.ascii	"PWM_1_WriteCompare\000"
+ 3443      315F5772 
+ 3443      69746543 
+ 3443      6F6D7061 
+ 3443      726500
+ 3444              	.LASF41:
+ 3445 022d 414D7578 		.ascii	"AMux_1_Start\000"
+ 3445      5F315F53 
+ 3445      74617274 
+ 3445      00
+ 3446              	.LASF17:
+ 3447 023a 73697A65 		.ascii	"sizetype\000"
+ 3447      74797065 
+ 3447      00
+ 3448              	.LASF45:
+ 3449 0243 6D61696E 		.ascii	"main.c\000"
+ 3449      2E6300
+ 3450              	.LASF15:
+ 3451 024a 63686172 		.ascii	"char\000"
+ 3451      00
+ 3452              	.LASF27:
+ 3453 024f 54585F44 		.ascii	"TX_DATA8\000"
+ 3453      41544138 
+ 3453      00
+ 3454              	.LASF46:
+ 3455 0258 433A5C55 		.ascii	"C:\\Users\\UniPrograms\\Documents\\PSoC Creator\\MU"
+ 3455      73657273 
+ 3455      5C556E69 
+ 3455      50726F67 
+ 3455      72616D73 
+ 3456 0286 525C564F 		.ascii	"R\\VOLTCANMASTER.cydsn\000"
+ 3456      4C544341 
+ 3456      4E4D4153 
+ 3456      5445522E 
+ 3456      63796473 
+ 3457              	.LASF31:
+ 3458 029c 4144435F 		.ascii	"ADC_DelSig_1_IsEndConversion\000"
+ 3458      44656C53 
+ 3458      69675F31 
+ 3458      5F497345 
+ 3458      6E64436F 
+ 3459              	.LASF4:
+ 3460 02b9 6C6F6E67 		.ascii	"long int\000"
+ 3460      20696E74 
+ 3460      00
+ 3461              	.LASF43:
+ 3462 02c2 4144435F 		.ascii	"ADC_DelSig_1_StartConvert\000"
+ 3462      44656C53 
+ 3462      69675F31 
+ARM GAS  C:\Users\UNIPRO~1\AppData\Local\Temp\cc3v7T3f.s 			page 70
+
+
+ 3462      5F537461 
+ 3462      7274436F 
+ 3463              	.LASF16:
+ 3464 02dc 6C6F6E67 		.ascii	"long double\000"
+ 3464      20646F75 
+ 3464      626C6500 
+ 3465              	.LASF42:
+ 3466 02e8 43414E5F 		.ascii	"CAN_1_Start\000"
+ 3466      315F5374 
+ 3466      61727400 
+ 3467              	.LASF0:
+ 3468 02f4 7369676E 		.ascii	"signed char\000"
+ 3468      65642063 
+ 3468      68617200 
+ 3469              	.LASF28:
+ 3470 0300 55415254 		.ascii	"UART_1_PutString\000"
+ 3470      5F315F50 
+ 3470      75745374 
+ 3470      72696E67 
+ 3470      00
+ 3471              	.LASF34:
+ 3472 0311 73707269 		.ascii	"sprintf\000"
+ 3472      6E746600 
+ 3473              	.LASF29:
+ 3474 0319 43794465 		.ascii	"CyDelay\000"
+ 3474      6C617900 
+ 3475              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
